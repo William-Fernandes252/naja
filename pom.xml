@@ -7,7 +7,7 @@
   <modules>
     <module>core</module>
     <module>cli</module>
-    <module>rest-api</module>
+    <module>restapi</module>
   </modules>
   <properties>
     <maven.compiler.source>17</maven.compiler.source>
