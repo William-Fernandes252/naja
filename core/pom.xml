@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.example.naja</groupId>
+    <artifactId>naja</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+  <groupId>com.example.naja</groupId>
+  <artifactId>core</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <name>core</name>
+  <url>http://maven.apache.org</url>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.antlr</groupId>
+        <artifactId>antlr4-maven-plugin</artifactId>
+        <version>4.3</version>
+        <executions>
+          <execution>
+            <id>antlr</id>
+            <goals>
+              <goal>antlr4</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+  </dependencies>
+</project>
