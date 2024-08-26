@@ -1,4 +1,4 @@
-package com.example.naja;
+package com.example.cli;
 
 /**
  * Hello world!
@@ -7,6 +7,5 @@ package com.example.naja;
 public class App {
     public static void main(String[] args) {
         System.out.println("Hello World!");
-
     }
 }

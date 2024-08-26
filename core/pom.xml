@@ -28,9 +28,9 @@
         <configuration>
           <arguments>
             <argument>-package</argument>
-            <argument>com.example.naja.lib</argument>
+            <argument>com.example.core.lib</argument>
           </arguments>
-          <outputDirectory>${basedir}/src/main/java/com/example/naja/lib</outputDirectory>
+          <outputDirectory>${basedir}/src/main/java/com/example/core/lib</outputDirectory>
         </configuration>
       </plugin>
     </plugins>

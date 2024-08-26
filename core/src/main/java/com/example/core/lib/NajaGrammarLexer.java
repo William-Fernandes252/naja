@@ -1,5 +1,5 @@
 // Generated from NajaGrammar.g4 by ANTLR 4.3
-package com.example.naja.lib;
+package com.example.core.lib;
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;
