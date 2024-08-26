@@ -7,7 +7,6 @@
     <artifactId>naja</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
-  <groupId>com.example.naja</groupId>
   <artifactId>core</artifactId>
   <version>1.0-SNAPSHOT</version>
   <name>core</name>
@@ -26,9 +25,21 @@
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <arguments>
+            <argument>-package</argument>
+            <argument>com.example.naja.lib</argument>
+          </arguments>
+          <outputDirectory>${basedir}/src/main/java/com/example/naja/lib</outputDirectory>
+        </configuration>
       </plugin>
     </plugins>
   </build>
   <dependencies>
+    <dependency>
+      <groupId>org.antlr</groupId>
+      <artifactId>antlr4</artifactId>
+      <version>4.13.2</version>
+    </dependency>
   </dependencies>
 </project>
