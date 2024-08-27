@@ -1,5 +1,5 @@
 // Generated from NajaGrammar.g4 by ANTLR 4.3
-package com.example.core.lib;
+package com.example.naja.core.lib;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;

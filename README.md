@@ -7,7 +7,7 @@ Compiler and tools for the Naja language.
 The project is based on Java 20, and its build and distribution is managed with Maven.
 In order to contribute, or compile the project locally, make sure you have
 
-- OpenJDK `20.*`
+- OpenJDK `21.*`
 - Apache Maven `3.8.*`
 
 installed on your machine.
