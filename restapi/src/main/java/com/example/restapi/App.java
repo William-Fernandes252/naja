@@ -1,4 +1,4 @@
-package com.example.naja;
+package com.example.restapi;
 
 /**
  * Hello world!
