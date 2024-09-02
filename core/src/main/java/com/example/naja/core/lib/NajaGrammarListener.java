@@ -1,6 +1,5 @@
-// Generated from NajaGrammar.g4 by ANTLR 4.3
+// Generated from NajaGrammar.g4 by ANTLR 4.13.2
 package com.example.naja.core.lib;
-import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -9,57 +8,53 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  */
 public interface NajaGrammarListener extends ParseTreeListener {
 	/**
-	 * Enter a parse tree produced by {@link NajaGrammarParser#exprl}.
-	 * @param ctx the parse tree
-	 */
-	void enterExprl(@NotNull NajaGrammarParser.ExprlContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link NajaGrammarParser#exprl}.
-	 * @param ctx the parse tree
-	 */
-	void exitExprl(@NotNull NajaGrammarParser.ExprlContext ctx);
-
-	/**
-	 * Enter a parse tree produced by {@link NajaGrammarParser#termo}.
-	 * @param ctx the parse tree
-	 */
-	void enterTermo(@NotNull NajaGrammarParser.TermoContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link NajaGrammarParser#termo}.
-	 * @param ctx the parse tree
-	 */
-	void exitTermo(@NotNull NajaGrammarParser.TermoContext ctx);
-
-	/**
 	 * Enter a parse tree produced by {@link NajaGrammarParser#programa}.
 	 * @param ctx the parse tree
 	 */
-	void enterPrograma(@NotNull NajaGrammarParser.ProgramaContext ctx);
+	void enterPrograma(NajaGrammarParser.ProgramaContext ctx);
 	/**
 	 * Exit a parse tree produced by {@link NajaGrammarParser#programa}.
 	 * @param ctx the parse tree
 	 */
-	void exitPrograma(@NotNull NajaGrammarParser.ProgramaContext ctx);
-
-	/**
-	 * Enter a parse tree produced by {@link NajaGrammarParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterExpr(@NotNull NajaGrammarParser.ExprContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link NajaGrammarParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitExpr(@NotNull NajaGrammarParser.ExprContext ctx);
-
+	void exitPrograma(NajaGrammarParser.ProgramaContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link NajaGrammarParser#declaravar}.
 	 * @param ctx the parse tree
 	 */
-	void enterDeclaravar(@NotNull NajaGrammarParser.DeclaravarContext ctx);
+	void enterDeclaravar(NajaGrammarParser.DeclaravarContext ctx);
 	/**
 	 * Exit a parse tree produced by {@link NajaGrammarParser#declaravar}.
 	 * @param ctx the parse tree
 	 */
-	void exitDeclaravar(@NotNull NajaGrammarParser.DeclaravarContext ctx);
+	void exitDeclaravar(NajaGrammarParser.DeclaravarContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link NajaGrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterExpr(NajaGrammarParser.ExprContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link NajaGrammarParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitExpr(NajaGrammarParser.ExprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link NajaGrammarParser#termo}.
+	 * @param ctx the parse tree
+	 */
+	void enterTermo(NajaGrammarParser.TermoContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link NajaGrammarParser#termo}.
+	 * @param ctx the parse tree
+	 */
+	void exitTermo(NajaGrammarParser.TermoContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link NajaGrammarParser#exprl}.
+	 * @param ctx the parse tree
+	 */
+	void enterExprl(NajaGrammarParser.ExprlContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link NajaGrammarParser#exprl}.
+	 * @param ctx the parse tree
+	 */
+	void exitExprl(NajaGrammarParser.ExprlContext ctx);
 }

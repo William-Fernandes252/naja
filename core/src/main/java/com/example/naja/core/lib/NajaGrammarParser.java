@@ -1,4 +1,4 @@
-// Generated from NajaGrammar.g4 by ANTLR 4.3
+// Generated from NajaGrammar.g4 by ANTLR 4.13.2
 package com.example.naja.core.lib;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -9,32 +9,75 @@ import java.util.List;
 import java.util.Iterator;
 import java.util.ArrayList;
 
-@SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
+@SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast", "CheckReturnValue", "this-escape"})
 public class NajaGrammarParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.3", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.13.2", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__4=1, T__3=2, T__2=3, T__1=4, T__0=5, OP=6, ID=7, NUM=8, VIRG=9, PV=10, 
+		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, OP=6, ID=7, NUM=8, VIRG=9, PV=10, 
 		DP=11, WS=12;
-	public static final String[] tokenNames = {
-		"<INVALID>", "'text'", "'fimprog'", "'number'", "'declare'", "'programa'", 
-		"OP", "ID", "NUM", "','", "';'", "':'", "WS"
-	};
 	public static final int
 		RULE_programa = 0, RULE_declaravar = 1, RULE_expr = 2, RULE_termo = 3, 
 		RULE_exprl = 4;
-	public static final String[] ruleNames = {
-		"programa", "declaravar", "expr", "termo", "exprl"
-	};
+	private static String[] makeRuleNames() {
+		return new String[] {
+			"programa", "declaravar", "expr", "termo", "exprl"
+		};
+	}
+	public static final String[] ruleNames = makeRuleNames();
+
+	private static String[] makeLiteralNames() {
+		return new String[] {
+			null, "'programa'", "'fimprog'", "'declare'", "'number'", "'text'", null, 
+			null, null, "','", "';'", "':'"
+		};
+	}
+	private static final String[] _LITERAL_NAMES = makeLiteralNames();
+	private static String[] makeSymbolicNames() {
+		return new String[] {
+			null, null, null, null, null, null, "OP", "ID", "NUM", "VIRG", "PV", 
+			"DP", "WS"
+		};
+	}
+	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
+	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
+
+	/**
+	 * @deprecated Use {@link #VOCABULARY} instead.
+	 */
+	@Deprecated
+	public static final String[] tokenNames;
+	static {
+		tokenNames = new String[_SYMBOLIC_NAMES.length];
+		for (int i = 0; i < tokenNames.length; i++) {
+			tokenNames[i] = VOCABULARY.getLiteralName(i);
+			if (tokenNames[i] == null) {
+				tokenNames[i] = VOCABULARY.getSymbolicName(i);
+			}
+
+			if (tokenNames[i] == null) {
+				tokenNames[i] = "<INVALID>";
+			}
+		}
+	}
+
+	@Override
+	@Deprecated
+	public String[] getTokenNames() {
+		return tokenNames;
+	}
+
+	@Override
+
+	public Vocabulary getVocabulary() {
+		return VOCABULARY;
+	}
 
 	@Override
 	public String getGrammarFileName() { return "NajaGrammar.g4"; }
-
-	@Override
-	public String[] getTokenNames() { return tokenNames; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }
@@ -49,15 +92,17 @@ public class NajaGrammarParser extends Parser {
 		super(input);
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
+
+	@SuppressWarnings("CheckReturnValue")
 	public static class ProgramaContext extends ParserRuleContext {
-		public DeclaravarContext declaravar(int i) {
-			return getRuleContext(DeclaravarContext.class,i);
-		}
 		public ExprContext expr() {
 			return getRuleContext(ExprContext.class,0);
 		}
 		public List<DeclaravarContext> declaravar() {
 			return getRuleContexts(DeclaravarContext.class);
+		}
+		public DeclaravarContext declaravar(int i) {
+			return getRuleContext(DeclaravarContext.class,i);
 		}
 		public ProgramaContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -80,22 +125,26 @@ public class NajaGrammarParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(10); match(T__0);
+			setState(10);
+			match(T__0);
 			setState(12); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
 				{
-				setState(11); declaravar();
+				setState(11);
+				declaravar();
 				}
 				}
 				setState(14); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			} while ( _la==T__1 );
-			setState(16); expr();
-			setState(17); match(T__3);
+			} while ( _la==T__2 );
+			setState(16);
+			expr();
+			setState(17);
+			match(T__1);
 			}
 		}
 		catch (RecognitionException re) {
@@ -109,17 +158,18 @@ public class NajaGrammarParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class DeclaravarContext extends ParserRuleContext {
 		public List<TerminalNode> ID() { return getTokens(NajaGrammarParser.ID); }
-		public TerminalNode DP() { return getToken(NajaGrammarParser.DP, 0); }
-		public TerminalNode PV() { return getToken(NajaGrammarParser.PV, 0); }
 		public TerminalNode ID(int i) {
 			return getToken(NajaGrammarParser.ID, i);
 		}
+		public TerminalNode DP() { return getToken(NajaGrammarParser.DP, 0); }
+		public TerminalNode PV() { return getToken(NajaGrammarParser.PV, 0); }
+		public List<TerminalNode> VIRG() { return getTokens(NajaGrammarParser.VIRG); }
 		public TerminalNode VIRG(int i) {
 			return getToken(NajaGrammarParser.VIRG, i);
 		}
-		public List<TerminalNode> VIRG() { return getTokens(NajaGrammarParser.VIRG); }
 		public DeclaravarContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -141,30 +191,40 @@ public class NajaGrammarParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(19); match(T__1);
-			setState(20); match(ID);
+			setState(19);
+			match(T__2);
+			setState(20);
+			match(ID);
 			setState(25);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==VIRG) {
 				{
 				{
-				setState(21); match(VIRG);
-				setState(22); match(ID);
+				setState(21);
+				match(VIRG);
+				setState(22);
+				match(ID);
 				}
 				}
 				setState(27);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(28); match(DP);
+			setState(28);
+			match(DP);
 			setState(29);
 			_la = _input.LA(1);
-			if ( !(_la==T__4 || _la==T__2) ) {
+			if ( !(_la==T__3 || _la==T__4) ) {
 			_errHandler.recoverInline(this);
 			}
-			consume();
-			setState(30); match(PV);
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
+				consume();
+			}
+			setState(30);
+			match(PV);
 			}
 		}
 		catch (RecognitionException re) {
@@ -178,14 +238,15 @@ public class NajaGrammarParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ExprContext extends ParserRuleContext {
 		public TermoContext termo() {
 			return getRuleContext(TermoContext.class,0);
 		}
-		public TerminalNode PV() { return getToken(NajaGrammarParser.PV, 0); }
 		public ExprlContext exprl() {
 			return getRuleContext(ExprlContext.class,0);
 		}
+		public TerminalNode PV() { return getToken(NajaGrammarParser.PV, 0); }
 		public ExprContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -206,9 +267,12 @@ public class NajaGrammarParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(32); termo();
-			setState(33); exprl();
-			setState(34); match(PV);
+			setState(32);
+			termo();
+			setState(33);
+			exprl();
+			setState(34);
+			match(PV);
 			}
 		}
 		catch (RecognitionException re) {
@@ -222,6 +286,7 @@ public class NajaGrammarParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class TermoContext extends ParserRuleContext {
 		public TerminalNode ID() { return getToken(NajaGrammarParser.ID, 0); }
 		public TerminalNode NUM() { return getToken(NajaGrammarParser.NUM, 0); }
@@ -251,7 +316,11 @@ public class NajaGrammarParser extends Parser {
 			if ( !(_la==ID || _la==NUM) ) {
 			_errHandler.recoverInline(this);
 			}
-			consume();
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
+				consume();
+			}
 			}
 		}
 		catch (RecognitionException re) {
@@ -265,16 +334,17 @@ public class NajaGrammarParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ExprlContext extends ParserRuleContext {
 		public List<TerminalNode> OP() { return getTokens(NajaGrammarParser.OP); }
+		public TerminalNode OP(int i) {
+			return getToken(NajaGrammarParser.OP, i);
+		}
 		public List<TermoContext> termo() {
 			return getRuleContexts(TermoContext.class);
 		}
 		public TermoContext termo(int i) {
 			return getRuleContext(TermoContext.class,i);
-		}
-		public TerminalNode OP(int i) {
-			return getToken(NajaGrammarParser.OP, i);
 		}
 		public ExprlContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -303,8 +373,10 @@ public class NajaGrammarParser extends Parser {
 			while (_la==OP) {
 				{
 				{
-				setState(38); match(OP);
-				setState(39); termo();
+				setState(38);
+				match(OP);
+				setState(39);
+				termo();
 				}
 				}
 				setState(44);
@@ -325,19 +397,35 @@ public class NajaGrammarParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\16\60\4\2\t\2\4\3"+
-		"\t\3\4\4\t\4\4\5\t\5\4\6\t\6\3\2\3\2\6\2\17\n\2\r\2\16\2\20\3\2\3\2\3"+
-		"\2\3\3\3\3\3\3\3\3\7\3\32\n\3\f\3\16\3\35\13\3\3\3\3\3\3\3\3\3\3\4\3\4"+
-		"\3\4\3\4\3\5\3\5\3\6\3\6\7\6+\n\6\f\6\16\6.\13\6\3\6\2\2\7\2\4\6\b\n\2"+
-		"\4\4\2\3\3\5\5\3\2\t\n-\2\f\3\2\2\2\4\25\3\2\2\2\6\"\3\2\2\2\b&\3\2\2"+
-		"\2\n,\3\2\2\2\f\16\7\7\2\2\r\17\5\4\3\2\16\r\3\2\2\2\17\20\3\2\2\2\20"+
-		"\16\3\2\2\2\20\21\3\2\2\2\21\22\3\2\2\2\22\23\5\6\4\2\23\24\7\4\2\2\24"+
-		"\3\3\2\2\2\25\26\7\6\2\2\26\33\7\t\2\2\27\30\7\13\2\2\30\32\7\t\2\2\31"+
-		"\27\3\2\2\2\32\35\3\2\2\2\33\31\3\2\2\2\33\34\3\2\2\2\34\36\3\2\2\2\35"+
-		"\33\3\2\2\2\36\37\7\r\2\2\37 \t\2\2\2 !\7\f\2\2!\5\3\2\2\2\"#\5\b\5\2"+
-		"#$\5\n\6\2$%\7\f\2\2%\7\3\2\2\2&\'\t\3\2\2\'\t\3\2\2\2()\7\b\2\2)+\5\b"+
-		"\5\2*(\3\2\2\2+.\3\2\2\2,*\3\2\2\2,-\3\2\2\2-\13\3\2\2\2.,\3\2\2\2\5\20"+
-		"\33,";
+		"\u0004\u0001\f.\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
+		"\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004\u0001"+
+		"\u0000\u0001\u0000\u0004\u0000\r\b\u0000\u000b\u0000\f\u0000\u000e\u0001"+
+		"\u0000\u0001\u0000\u0001\u0000\u0001\u0001\u0001\u0001\u0001\u0001\u0001"+
+		"\u0001\u0005\u0001\u0018\b\u0001\n\u0001\f\u0001\u001b\t\u0001\u0001\u0001"+
+		"\u0001\u0001\u0001\u0001\u0001\u0001\u0001\u0002\u0001\u0002\u0001\u0002"+
+		"\u0001\u0002\u0001\u0003\u0001\u0003\u0001\u0004\u0001\u0004\u0005\u0004"+
+		")\b\u0004\n\u0004\f\u0004,\t\u0004\u0001\u0004\u0000\u0000\u0005\u0000"+
+		"\u0002\u0004\u0006\b\u0000\u0002\u0001\u0000\u0004\u0005\u0001\u0000\u0007"+
+		"\b+\u0000\n\u0001\u0000\u0000\u0000\u0002\u0013\u0001\u0000\u0000\u0000"+
+		"\u0004 \u0001\u0000\u0000\u0000\u0006$\u0001\u0000\u0000\u0000\b*\u0001"+
+		"\u0000\u0000\u0000\n\f\u0005\u0001\u0000\u0000\u000b\r\u0003\u0002\u0001"+
+		"\u0000\f\u000b\u0001\u0000\u0000\u0000\r\u000e\u0001\u0000\u0000\u0000"+
+		"\u000e\f\u0001\u0000\u0000\u0000\u000e\u000f\u0001\u0000\u0000\u0000\u000f"+
+		"\u0010\u0001\u0000\u0000\u0000\u0010\u0011\u0003\u0004\u0002\u0000\u0011"+
+		"\u0012\u0005\u0002\u0000\u0000\u0012\u0001\u0001\u0000\u0000\u0000\u0013"+
+		"\u0014\u0005\u0003\u0000\u0000\u0014\u0019\u0005\u0007\u0000\u0000\u0015"+
+		"\u0016\u0005\t\u0000\u0000\u0016\u0018\u0005\u0007\u0000\u0000\u0017\u0015"+
+		"\u0001\u0000\u0000\u0000\u0018\u001b\u0001\u0000\u0000\u0000\u0019\u0017"+
+		"\u0001\u0000\u0000\u0000\u0019\u001a\u0001\u0000\u0000\u0000\u001a\u001c"+
+		"\u0001\u0000\u0000\u0000\u001b\u0019\u0001\u0000\u0000\u0000\u001c\u001d"+
+		"\u0005\u000b\u0000\u0000\u001d\u001e\u0007\u0000\u0000\u0000\u001e\u001f"+
+		"\u0005\n\u0000\u0000\u001f\u0003\u0001\u0000\u0000\u0000 !\u0003\u0006"+
+		"\u0003\u0000!\"\u0003\b\u0004\u0000\"#\u0005\n\u0000\u0000#\u0005\u0001"+
+		"\u0000\u0000\u0000$%\u0007\u0001\u0000\u0000%\u0007\u0001\u0000\u0000"+
+		"\u0000&\'\u0005\u0006\u0000\u0000\')\u0003\u0006\u0003\u0000(&\u0001\u0000"+
+		"\u0000\u0000),\u0001\u0000\u0000\u0000*(\u0001\u0000\u0000\u0000*+\u0001"+
+		"\u0000\u0000\u0000+\t\u0001\u0000\u0000\u0000,*\u0001\u0000\u0000\u0000"+
+		"\u0003\u000e\u0019*";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
