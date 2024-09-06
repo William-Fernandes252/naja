@@ -3,8 +3,11 @@ package com.example.naja.core.lib;
 
     import java.util.ArrayList;
     import java.util.HashMap;
-    import com.example.naja.types.*;
+    import java.util.Stack;
+    import com.example.naja.core.types.*;
     import com.example.naja.core.exceptions.*;
+    import com.example.naja.core.ast.*;
+    import com.example.naja.core.runtime.*;
 
 
 
@@ -43,6 +46,30 @@ public class NajaGrammarBaseListener implements NajaGrammarListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitComando(NajaGrammarParser.ComandoContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCmdWhile(NajaGrammarParser.CmdWhileContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCmdWhile(NajaGrammarParser.CmdWhileContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCmdIf(NajaGrammarParser.CmdIfContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCmdIf(NajaGrammarParser.CmdIfContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

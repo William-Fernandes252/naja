@@ -1,4 +1,4 @@
-package com.example.naja.types;
+package com.example.naja.core.types;
 
 public enum Types {
     NUMBER(1),

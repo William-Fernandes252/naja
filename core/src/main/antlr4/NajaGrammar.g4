@@ -3,8 +3,11 @@ grammar NajaGrammar;
 @header{
     import java.util.ArrayList;
     import java.util.HashMap;
-    import com.example.naja.types.*;
+    import java.util.Stack;
+    import com.example.naja.core.types.*;
     import com.example.naja.core.exceptions.*;
+    import com.example.naja.core.ast.*;
+    import com.example.naja.core.runtime.*;
 
 }
 
@@ -13,6 +16,10 @@ grammar NajaGrammar;
     private ArrayList <Var> currentDec = new ArrayList<Var>();
     private Types currentType;
     private Types leftType = null , rightType = null;
+    private Program program = new Program();
+    private String strExpr = "";
+    private IfCommand currentIfCommand;
+    private Stack<ArrayList<Command>> stack = new Stack<ArrayList<Command>>();
 
     public void updateType(){
       for (Var v: currentDec){
@@ -31,21 +38,70 @@ grammar NajaGrammar;
     public boolean isDeclared(String id){
       return symbolTable.get(id) != null;
     }
+
+    public Program getProgram(){
+      return this.program;
+    }
+
+    private Stack<AbstractExpression> abeStack = new Stack<AbstractExpression>();
+    private AbstractExpression topo = null;
+    public double generateValue(){
+        if (topo == null){
+             topo = abeStack.pop();
+        }
+        return topo.evaluate();
+    }
+
+    public String generateJSON(){
+         if (topo == null){
+            topo = abeStack.pop();
+        }
+        return topo.toJson();
+
+    }
+
 }
 
 // regras sintáticas
-programa  : 'programa'
+programa  : 'programa' ID { program.setName(_input.LT(-1).getText()); 
+                            stack.push(new ArrayList<Command>());
+                          }
             declaravar+
             'inicio'
             comando+
             'fim' 
             'fimprog'
+            {
+              program.setSymbolTable(symbolTable);
+              program.setCommandList(stack.pop());
+            }
           ;
 
 comando     : cmdAttrib
             | cmdLeitura
             | cmdEscrita
+            | cmdIf
+            | cmdWhile
             ;
+cmdWhile    : 'enquanto' AP expr OP_REL expr FP 'faça' comando+ 'fimfaça'
+            ;
+cmdIf       : 'se' { stack.push(new ArrayList<Command>());
+                      strExpr = "";
+                      currentIfCommand = new IfCommand();
+                    }
+               AP
+              expr
+              OP_REL { strExpr += _input.LT(-1).getText(); }
+              expr 
+              FP { currentIfCommand.setExpression(strExpr); }
+              'entao'
+              comando+{currentIfCommand.setTrueList(stack.pop());}
+              ('senao' {stack.push(new ArrayList<Command>());}
+              comando+ )?  {currentIfCommand.setFalseList(stack.pop());}
+              'fimse' {stack.peek().add(currentIfCommand);}
+            ;
+
+
 
 cmdAttrib   : ID { if (!isDeclared(_input.LT(-1).getText())) {
                     throw new NajaSemanticException("Undeclared Varible: " +_input.LT(-1).getText());
@@ -69,13 +125,20 @@ cmdLeitura  : 'leia' AP
                     throw new NajaSemanticException("Undeclared Varible: " +_input.LT(-1).getText());
                       }
                       symbolTable.get(_input.LT(-1).getText()).setInitialized(true);
+                      Command cmdRead = new ReadCommand(symbolTable.get(_input.LT(-1).getText()));
+                      stack.peek().add(cmdRead);
                     } 
                       FP 
                       PV 
             ;
 
 
-cmdEscrita  :'escreva' AP (termo) FP PV {rightType = null;}
+cmdEscrita  :'escreva' AP 
+                      (termo) {Command cmdWrite = new WriteCommand(_input.LT(-1).getText());
+                                stack.peek().add(cmdWrite);
+
+                      } 
+                      FP PV {rightType = null;}
             ;           
 
 declaravar  : 'declare' {currentDec.clear();}
@@ -89,7 +152,9 @@ declaravar  : 'declare' {currentDec.clear();}
                 PV
             ;
 
-expr      : termo exprl 
+expr      : termo{strExpr += _input.LT(-1).getText();
+                }
+           exprl 
           ;           
 
 termo     : ID  { if (!isDeclared(_input.LT(-1).getText())) {
@@ -127,7 +192,9 @@ termo     : ID  { if (!isDeclared(_input.LT(-1).getText())) {
                 }
           ;
 
-exprl     : ( OP termo ) *
+exprl     : ( OP { strExpr += _input.LT(-1).getText();} 
+            termo { strExpr += _input.LT(-1).getText();} 
+            ) *
           ;
 
 // Regras léxicas
@@ -136,6 +203,10 @@ OP        : '+' | '-' | '*' | '/'
 
 OP_AT     : ':='
           ;
+
+OP_REL    : '>' | '<' | '>=' | '<=' | '<>' | '=='
+          ;
+
 
 ID        : [a-z] ([a-z] | [A-Z] | [0-9] ) *
           ;
@@ -161,3 +232,5 @@ PV          : ';'
             ;
 DP          : ':'
             ;
+
+
