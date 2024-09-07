@@ -5,7 +5,7 @@ public class WriteCommand extends Command {
 
     @Override
     public String generateTarget() {
-        // TODO Auto-generated method stub
+        
         return "System.out.println("+content+");\n";
     }
 
