@@ -17,6 +17,7 @@ grammar NajaGrammar;
     private Types leftType = null , rightType = null;
     private Program program = new Program();
     private String strExpr = "";
+    private String strAttr = "";
     private IfCommand currentIfCommand;
     private Stack<ArrayList<Command>> stack = new Stack<ArrayList<Command>>();
     private Stack<AbstractExpression> abeStack = new Stack<AbstractExpression>();
@@ -128,8 +129,18 @@ cmdAttrib   : ID
                   }
                   symbolTable.get(_input.LT(-1).getText()).setInitialized(true);
                   leftType = symbolTable.get(_input.LT(-1).getText()).getType();
+
+                  AttCommand cmdAtt = new AttCommand();
+                  cmdAtt.setVar(symbolTable.get(_input.LT(-1).getText()));
+                  strAttr = "";
+
                 }
-               OP_AT expr PV
+               OP_AT expr 
+               {
+                  cmdAtt.setExpression(strAttr);
+                  stack.peek().add(cmdAtt);
+               }
+               PV
                {
                     //System.out.println("left side expression type = " + leftType );
                     //System.out.println("right side expression type = " + rightType) ;
@@ -176,7 +187,8 @@ cmdIf       : 'se'
               expr
               OP_REL
                { 
-                strExpr += _input.LT(-1).getText(); 
+                strExpr += _input.LT(-1).getText();
+                strAttr += _input.LT(-1).getText();
                } 
               expr 
               FP
@@ -192,10 +204,11 @@ cmdIf       : 'se'
               {
                 stack.push(new ArrayList<Command>());
               } 
-              comando+ )?
+              comando+
               {
                 currentIfCommand.setFalseList(stack.pop());
-              }  
+              }   
+              )?
               'fimse'
                 {
                     stack.peek().add(currentIfCommand);
@@ -208,6 +221,7 @@ cmdWhile    : 'enquanto' AP expr OP_REL expr FP 'faça' comando+ 'fimfaça'
 
 
 expr      : termo {strExpr += _input.LT(-1).getText();
+                  strAttr += _input.LT(-1).getText();
                 }
            exprl 
           ;           
@@ -218,11 +232,13 @@ termo     : fator
 termol      : ((OP_MUL | OP_DIV)
                 { 
                     strExpr += _input.LT(-1).getText();
+                    strAttr += _input.LT(-1).getText();
                 } 
                
                 fator
                 { 
                     strExpr += _input.LT(-1).getText();
+                    strAttr += _input.LT(-1).getText();
                 } 
                 )*
             ;
@@ -232,10 +248,12 @@ termol      : ((OP_MUL | OP_DIV)
 exprl     : ( (OP_SUM |OP_SUB)
             { 
                 strExpr += _input.LT(-1).getText();
+                strAttr += _input.LT(-1).getText();
             }
             termo
              { 
                  strExpr += _input.LT(-1).getText();
+                 strAttr += _input.LT(-1).getText();
              } 
    
             ) *
@@ -243,7 +261,6 @@ exprl     : ( (OP_SUM |OP_SUB)
 
  fator    : ID
             { 
-                symbolTable.get(_input.LT(-1).getText()).setUsed(true); 
                 if (!isDeclared(_input.LT(-1).getText())) {
                     throw new NajaSemanticException("Undeclared Variable: " +_input.LT(-1).getText());
                   }
@@ -258,6 +275,7 @@ exprl     : ( (OP_SUM |OP_SUB)
                       rightType = symbolTable.get(_input.LT(-1).getText()).getType();
                     }
                   }
+                  symbolTable.get(_input.LT(-1).getText()).setUsed(true); 
               }  
           | NUM 
             { 
