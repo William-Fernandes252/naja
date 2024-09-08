@@ -1,129 +1,106 @@
 grammar NajaGrammar;
 
-@header{
-    import java.util.ArrayList;
-    import java.util.HashMap;
-    import java.util.Stack;
-    import com.example.naja.core.types.*;
-    import com.example.naja.core.exceptions.*;
-    import com.example.naja.core.ast.*;
-    import com.example.naja.core.runtime.*;
+@header {
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Stack;
+import com.example.naja.core.types.*;
+import com.example.naja.core.exceptions.*;
+import com.example.naja.core.ast.*;
+import com.example.naja.core.runtime.*;
 }
 
-@members{
-    private HashMap <String,Var> symbolTable = new HashMap<String, Var>();
-    private ArrayList <Var> currentDec = new ArrayList<Var>();
-    private Types currentType;
-    private Types leftType = null , rightType = null;
-    private Program program = new Program();
-    private String strExpr = "";
-    private String strAttr = "";
-    private IfCommand currentIfCommand;
-    private Stack<ArrayList<Command>> stack = new Stack<ArrayList<Command>>();
-    private Stack<AbstractExpression> abeStack = new Stack<AbstractExpression>();
-    private AbstractExpression topo = null;
+@members {
+private HashMap <String,Var> symbolTable = new HashMap<String, Var>();
+private ArrayList <Var> currentDec = new ArrayList<Var>();
+private Types currentType;
+private Types leftType = null , rightType = null;
+private Program program = new Program();
+private String strExpr = "";
+private String strAttr = "";
+private IfCommand currentIfCommand;
+private Stack<ArrayList<Command>> stack = new Stack<ArrayList<Command>>();
+private Stack<AbstractExpression> abeStack = new Stack<AbstractExpression>();
+private AbstractExpression topo = null;
 
-    public void updateType(){
-      for (Var v: currentDec){
+public void updateType() {
+    for (Var v: currentDec) {
         v.setType(currentType);
         symbolTable.put(v.getId(), v);
-      }
-    }
-
-    public void exibirVar(){
-        for (String id: symbolTable.keySet()){
-            System.out.println(symbolTable.get(id));
-        }
-    }
-
-    public boolean isDeclared(String id){
-      return symbolTable.get(id) != null;
-    }
-
-    public Program getProgram(){
-      return this.program;
-    }
-
-    public double generateValue(){
-        if (topo == null){
-             topo = abeStack.pop();
-        }
-        return topo.evaluate();
-    }
-
-    public String generateJSON(){
-         if (topo == null){
-            topo = abeStack.pop();
-        }
-        return topo.toJson();
-    }
-    public void checkUnusedVariables() {
-      for (Var var : symbolTable.values()) {
-          if (!var.isUsed()) {
-             throw new NajaSemanticException("Unused variable: " +var.getId());
-        }
     }
 }
 
+public void exibirVar() {
+    for (String id: symbolTable.keySet()) {
+        System.out.println(symbolTable.get(id));
+    }
 }
 
+public boolean isDeclared(String id) {
+    return symbolTable.get(id) != null;
+}
 
+public Program getProgram() {
+    return this.program;
+}
+
+public double generateValue() {
+    if (topo == null) {
+        topo = abeStack.pop();
+    }
+    return topo.evaluate();
+}
+
+public String generateJSON() {
+    if (topo == null) {
+        topo = abeStack.pop();
+    }
+    return topo.toJson();
+}
+
+public void checkUnusedVariables() {
+    for (Var var : symbolTable.values()) {
+        if (!var.isUsed()) {
+            throw new NajaSemanticException("Unused variable: " +var.getId());
+        }
+    }
+}
+}
 
 // regras sintáticas
-programa  : 'programa' ID 
-                        {   
+programa:
+	'programa' ID {   
                             program.setName(_input.LT(-1).getText()); 
                             stack.push(new ArrayList<Command>());
-                        }
-            declaravar+
-            'inicio'
-            comando+
-            'fim' 
-            'fimprog'
-            {
+                        } declaravar+ 'inicio' comando+ 'fim' 'fimprog' {
               program.setSymbolTable(symbolTable);
               program.setCommandList(stack.pop());
               checkUnusedVariables();
-            }
-          ;
+            };
 
-declaravar  : 'declare' 
-                {
+declaravar:
+	'declare' {
                     currentDec.clear();
+                } ID { 
+                    currentDec.add(new Var(_input.LT(-1).getText()));
+                } (
+		VIRG ID { 
+                    currentDec.add(new Var(_input.LT(-1).getText()));
                 }
-                ID
-                { 
-                    currentDec.add(new Var(_input.LT(-1).getText()));
-                }  
-                (VIRG 
-                ID 
-                { 
-                    currentDec.add(new Var(_input.LT(-1).getText()));
-                } 
-                )* DP ('number'
-                {
+	)* DP (
+		'number' {
                     currentType = Types.NUMBER;
-                } 
-                | 'text'
-                 {
+                }
+		| 'text' {
                     currentType = Types.TEXT;
-                 } 
-                )
-                {
+                 }
+	) {
                     updateType();
-                } 
-                PV
-            ;
+                } PV;
 
-
-comando     : cmdAttrib
-            | cmdLeitura
-            | cmdEscrita
-            | cmdIf
-            | cmdWhile
-            ;
-cmdAttrib   : ID 
-                { 
+comando: cmdAttrib | cmdLeitura | cmdEscrita | cmdIf | cmdWhile;
+cmdAttrib:
+	ID { 
                     if (!isDeclared(_input.LT(-1).getText())) {
                     throw new NajaSemanticException("Undeclared Variable: " +_input.LT(-1).getText());
                   }
@@ -134,133 +111,88 @@ cmdAttrib   : ID
                   cmdAtt.setVar(symbolTable.get(_input.LT(-1).getText()));
                   strAttr = "";
 
-                }
-               OP_AT expr 
-               {
+                } OP_AT expr {
                   cmdAtt.setExpression(strAttr);
                   stack.peek().add(cmdAtt);
-               }
-               PV
-               {
+               } PV {
                     //System.out.println("left side expression type = " + leftType );
                     //System.out.println("right side expression type = " + rightType) ;
                     if(leftType.getValue() < rightType.getValue()){
                         throw new NajaSemanticException("Type Mismatch on Assigment");
                     }
-                }
-            ;
+                };
 
-cmdLeitura  : 'leia' AP 
-                      ID 
-                        {   
+cmdLeitura:
+	'leia' AP ID {   
                             if (!isDeclared(_input.LT(-1).getText())) {
                                 throw new NajaSemanticException("Undeclared Variable: " +_input.LT(-1).getText());
                             }
                             symbolTable.get(_input.LT(-1).getText()).setInitialized(true);
                             Command cmdRead = new ReadCommand(symbolTable.get(_input.LT(-1).getText()));
                             stack.peek().add(cmdRead);
-                        } 
-                      FP 
-                      PV
-            ;
+                        } FP PV;
 
-cmdEscrita  :'escreva' AP 
-                      (fator)
-                      {
+cmdEscrita:
+	'escreva' AP (fator) {
                         Command cmdWrite = new WriteCommand(_input.LT(-1).getText());
                                 stack.peek().add(cmdWrite);
 
-                      }  
-                      FP PV
-                        {
+                      } FP PV {
                             rightType = null;
-                        }  
-            ;           
+                        };
 
-
-cmdIf       : 'se'
-                {   stack.push(new ArrayList<Command>());
+cmdIf:
+	'se' {   stack.push(new ArrayList<Command>());
                     strExpr = "";
                     currentIfCommand = new IfCommand();
-                }
-               AP
-              expr
-              OP_REL
-               { 
+                } AP expr OP_REL { 
                 strExpr += _input.LT(-1).getText();
                 strAttr += _input.LT(-1).getText();
-               } 
-              expr 
-              FP
-              { 
+               } expr FP { 
                 currentIfCommand.setExpression(strExpr); 
-              } 
-              'entao'
-              comando+
-              {
+              } 'entao' comando+ {
                 currentIfCommand.setTrueList(stack.pop());
-              }
-              ('senao'
-              {
+              } (
+		'senao' {
                 stack.push(new ArrayList<Command>());
-              } 
-              comando+
-              {
+              } comando+ {
                 currentIfCommand.setFalseList(stack.pop());
-              }   
-              )?
-              'fimse'
-                {
+              }
+	)? 'fimse' {
                     stack.peek().add(currentIfCommand);
-                } 
-            ;
+                };
 
+cmdWhile:
+	'enquanto' AP expr OP_REL expr FP 'faça' comando+ 'fimfaça';
 
-cmdWhile    : 'enquanto' AP expr OP_REL expr FP 'faça' comando+ 'fimfaça'
-            ;
-
-
-expr      : termo {strExpr += _input.LT(-1).getText();
+expr:
+	termo {strExpr += _input.LT(-1).getText();
                   strAttr += _input.LT(-1).getText();
+                } exprl;
+
+termo: fator termol;
+termol: (
+		(OP_MUL | OP_DIV) { 
+                    strExpr += _input.LT(-1).getText();
+                    strAttr += _input.LT(-1).getText();
+                } fator { 
+                    strExpr += _input.LT(-1).getText();
+                    strAttr += _input.LT(-1).getText();
                 }
-           exprl 
-          ;           
+	)*;
 
-termo     : fator 
-            termol
-          ;
-termol      : ((OP_MUL | OP_DIV)
-                { 
-                    strExpr += _input.LT(-1).getText();
-                    strAttr += _input.LT(-1).getText();
-                } 
-               
-                fator
-                { 
-                    strExpr += _input.LT(-1).getText();
-                    strAttr += _input.LT(-1).getText();
-                } 
-                )*
-            ;
-
-
-
-exprl     : ( (OP_SUM |OP_SUB)
-            { 
+exprl: (
+		(OP_SUM | OP_SUB) { 
                 strExpr += _input.LT(-1).getText();
                 strAttr += _input.LT(-1).getText();
-            }
-            termo
-             { 
+            } termo { 
                  strExpr += _input.LT(-1).getText();
                  strAttr += _input.LT(-1).getText();
-             } 
-   
-            ) *
-          ;
+             }
+	)*;
 
- fator    : ID
-            { 
+fator:
+	ID { 
                 if (!isDeclared(_input.LT(-1).getText())) {
                     throw new NajaSemanticException("Undeclared Variable: " +_input.LT(-1).getText());
                   }
@@ -276,9 +208,8 @@ exprl     : ( (OP_SUM |OP_SUB)
                     }
                   }
                   symbolTable.get(_input.LT(-1).getText()).setUsed(true); 
-              }  
-          | NUM 
-            { 
+              }
+	| NUM { 
                 if (rightType == null) {
                   rightType = Types.NUMBER;
                   }
@@ -288,8 +219,7 @@ exprl     : ( (OP_SUM |OP_SUB)
                     }
                   }
                 }
-          | TEXTO
-          { 
+	| TEXTO { 
             if (rightType == null) {
                   rightType = Types.TEXT;
                   }
@@ -298,53 +228,34 @@ exprl     : ( (OP_SUM |OP_SUB)
                       rightType = Types.TEXT;
                     }
                   }
-                }
-          ;         
+                };
 
 // Regras léxicas
 
+OP_SUM: '+';
 
-OP_SUM      :'+'
-            ;
+OP_SUB: '-';
 
-OP_SUB      :'-'
-            ;
+OP_MUL: '*';
 
-OP_MUL      :'*'
-            ;
+OP_DIV: '/';
 
-OP_DIV      :'/'
-            ;
+OP_AT: ':=';
 
-OP_AT     : ':='
-          ;
+OP_REL: '>' | '<' | '>=' | '<=' | '<>' | '==';
 
-OP_REL    : '>' | '<' | '>=' | '<=' | '<>' | '=='
-          ;
+ID: [a-z] ([a-z] | [A-Z] | [0-9])*;
 
+NUM: [0-9]+ ('.' [0-9]+)?; // Numeros decimais
 
-ID        : [a-z] ([a-z] | [A-Z] | [0-9] ) *
-          ;
+TEXTO: '"' ([a-z] | [A-Z] | [0-9] | ',' | '.' | ' ' | '-')* '"';
 
-NUM       : [0-9]+ ('.' [0-9]+ )?        // Numeros decimais
-          ;
+WS: (' ' | '\n' | '\r' | '\t') -> skip;
 
-TEXTO     : '"' ([a-z] | [A-Z] | [0-9] | ',' | '.' |' ' | '-')* '"'
-          ;
+AP: '(';
 
-WS        : (' ' | '\n' | '\r' | '\t' ) -> skip
-          ;
+FP: ')';
 
-AP        : '('
-          ;
-
-FP        : ')'
-          ;
-
-VIRG        : ','
-            ;
-PV          : ';'
-            ;
-DP          : ':'
-            ;
-
+VIRG: ',';
+PV: ';';
+DP: ':';

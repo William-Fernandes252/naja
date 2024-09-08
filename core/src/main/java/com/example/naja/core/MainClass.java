@@ -1,6 +1,5 @@
 package com.example.naja.core;
 
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -18,29 +17,28 @@ public class MainClass {
         try {
             NajaGrammarLexer lexer;
             NajaGrammarParser parser;
-            //String caminhoAtual = System.getProperty("user.dir");
-            //System.out.println("Caminho do diretório atual: " + caminhoAtual);
+            // String caminhoAtual = System.getProperty("user.dir");
+            // System.out.println("Caminho do diretório atual: " + caminhoAtual);
 
             // Criar o analisador léxico
             lexer = new NajaGrammarLexer(CharStreams.fromFileName("program.in"));
-            
+
             // a partir do analisador léxico , obeter o fluxo de tokens
             CommonTokenStream tokenStream = new CommonTokenStream(lexer);
 
             // a partir do fluxo de tokens criar o parser
             parser = new NajaGrammarParser(tokenStream);
-            
+
             // chamar o parser
             System.out.println("Naja Compiler");
             parser.programa();
             System.out.println("Compilation Success!");
-            
 
-            //geração de código
+            // geração de código
             Program program = parser.getProgram();
 
             try {
-                File f = new File(program.getName()+".java");
+                File f = new File(program.getName() + ".java");
                 FileWriter fr = new FileWriter(f);
                 PrintWriter pr = new PrintWriter(fr);
                 pr.println(program.generateTarget());
@@ -53,8 +51,7 @@ public class MainClass {
 
         } catch (Exception ex) {
             System.err.println("Error: " + ex.getMessage());
-            //ex.printStackTrace();
+            // ex.printStackTrace();
         }
     }
-    
 }

@@ -2,7 +2,7 @@ package com.example.naja.core.ast;
 
 import com.example.naja.core.types.Var;
 
-public class AttCommand extends Command{
+public class AttCommand extends Command {
     private String expression;
     private Var var;
 
@@ -33,10 +33,8 @@ public class AttCommand extends Command{
     @Override
     public String generateTarget() {
         StringBuilder str = new StringBuilder();
-        str.append(var.getId()+" ");
-        str.append(" = "+expression+";\n");
+        str.append(var.getId() + " ");
+        str.append(" = " + expression + ";\n");
         return str.toString();
     }
-
-
 }

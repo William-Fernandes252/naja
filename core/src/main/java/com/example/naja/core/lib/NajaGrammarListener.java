@@ -1,14 +1,13 @@
 // Generated from NajaGrammar.g4 by ANTLR 4.13.2
 package com.example.naja.core.lib;
 
-    import java.util.ArrayList;
-    import java.util.HashMap;
-    import java.util.Stack;
-    import com.example.naja.core.types.*;
-    import com.example.naja.core.exceptions.*;
-    import com.example.naja.core.ast.*;
-    import com.example.naja.core.runtime.*;
-
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Stack;
+import com.example.naja.core.types.*;
+import com.example.naja.core.exceptions.*;
+import com.example.naja.core.ast.*;
+import com.example.naja.core.runtime.*;
 
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -28,6 +27,16 @@ public interface NajaGrammarListener extends ParseTreeListener {
 	 */
 	void exitPrograma(NajaGrammarParser.ProgramaContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link NajaGrammarParser#declaravar}.
+	 * @param ctx the parse tree
+	 */
+	void enterDeclaravar(NajaGrammarParser.DeclaravarContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link NajaGrammarParser#declaravar}.
+	 * @param ctx the parse tree
+	 */
+	void exitDeclaravar(NajaGrammarParser.DeclaravarContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link NajaGrammarParser#comando}.
 	 * @param ctx the parse tree
 	 */
@@ -37,26 +46,6 @@ public interface NajaGrammarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitComando(NajaGrammarParser.ComandoContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link NajaGrammarParser#cmdWhile}.
-	 * @param ctx the parse tree
-	 */
-	void enterCmdWhile(NajaGrammarParser.CmdWhileContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link NajaGrammarParser#cmdWhile}.
-	 * @param ctx the parse tree
-	 */
-	void exitCmdWhile(NajaGrammarParser.CmdWhileContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link NajaGrammarParser#cmdIf}.
-	 * @param ctx the parse tree
-	 */
-	void enterCmdIf(NajaGrammarParser.CmdIfContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link NajaGrammarParser#cmdIf}.
-	 * @param ctx the parse tree
-	 */
-	void exitCmdIf(NajaGrammarParser.CmdIfContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link NajaGrammarParser#cmdAttrib}.
 	 * @param ctx the parse tree
@@ -88,15 +77,25 @@ public interface NajaGrammarListener extends ParseTreeListener {
 	 */
 	void exitCmdEscrita(NajaGrammarParser.CmdEscritaContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link NajaGrammarParser#declaravar}.
+	 * Enter a parse tree produced by {@link NajaGrammarParser#cmdIf}.
 	 * @param ctx the parse tree
 	 */
-	void enterDeclaravar(NajaGrammarParser.DeclaravarContext ctx);
+	void enterCmdIf(NajaGrammarParser.CmdIfContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link NajaGrammarParser#declaravar}.
+	 * Exit a parse tree produced by {@link NajaGrammarParser#cmdIf}.
 	 * @param ctx the parse tree
 	 */
-	void exitDeclaravar(NajaGrammarParser.DeclaravarContext ctx);
+	void exitCmdIf(NajaGrammarParser.CmdIfContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link NajaGrammarParser#cmdWhile}.
+	 * @param ctx the parse tree
+	 */
+	void enterCmdWhile(NajaGrammarParser.CmdWhileContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link NajaGrammarParser#cmdWhile}.
+	 * @param ctx the parse tree
+	 */
+	void exitCmdWhile(NajaGrammarParser.CmdWhileContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link NajaGrammarParser#expr}.
 	 * @param ctx the parse tree
@@ -118,6 +117,16 @@ public interface NajaGrammarListener extends ParseTreeListener {
 	 */
 	void exitTermo(NajaGrammarParser.TermoContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link NajaGrammarParser#termol}.
+	 * @param ctx the parse tree
+	 */
+	void enterTermol(NajaGrammarParser.TermolContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link NajaGrammarParser#termol}.
+	 * @param ctx the parse tree
+	 */
+	void exitTermol(NajaGrammarParser.TermolContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link NajaGrammarParser#exprl}.
 	 * @param ctx the parse tree
 	 */
@@ -127,4 +136,14 @@ public interface NajaGrammarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitExprl(NajaGrammarParser.ExprlContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link NajaGrammarParser#fator}.
+	 * @param ctx the parse tree
+	 */
+	void enterFator(NajaGrammarParser.FatorContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link NajaGrammarParser#fator}.
+	 * @param ctx the parse tree
+	 */
+	void exitFator(NajaGrammarParser.FatorContext ctx);
 }

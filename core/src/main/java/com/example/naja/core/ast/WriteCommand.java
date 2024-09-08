@@ -5,8 +5,7 @@ public class WriteCommand extends Command {
 
     @Override
     public String generateTarget() {
-        
-        return "System.out.println("+content+");\n";
+        return "System.out.println(" + content + ");\n";
     }
 
     public String getContent() {
@@ -23,5 +22,4 @@ public class WriteCommand extends Command {
     public WriteCommand(String content) {
         this.content = content;
     }
-
 }
