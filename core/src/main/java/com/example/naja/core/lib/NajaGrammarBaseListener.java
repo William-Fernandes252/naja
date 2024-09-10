@@ -26,157 +26,157 @@ public class NajaGrammarBaseListener implements NajaGrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPrograma(NajaGrammarParser.ProgramaContext ctx) { }
+	@Override public void enterProgram(NajaGrammarParser.ProgramContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitPrograma(NajaGrammarParser.ProgramaContext ctx) { }
+	@Override public void exitProgram(NajaGrammarParser.ProgramContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterDeclaravar(NajaGrammarParser.DeclaravarContext ctx) { }
+	@Override public void enterDeclaration(NajaGrammarParser.DeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitDeclaravar(NajaGrammarParser.DeclaravarContext ctx) { }
+	@Override public void exitDeclaration(NajaGrammarParser.DeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterComando(NajaGrammarParser.ComandoContext ctx) { }
+	@Override public void enterCommand(NajaGrammarParser.CommandContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitComando(NajaGrammarParser.ComandoContext ctx) { }
+	@Override public void exitCommand(NajaGrammarParser.CommandContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCmdAttrib(NajaGrammarParser.CmdAttribContext ctx) { }
+	@Override public void enterAssignment(NajaGrammarParser.AssignmentContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitCmdAttrib(NajaGrammarParser.CmdAttribContext ctx) { }
+	@Override public void exitAssignment(NajaGrammarParser.AssignmentContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCmdLeitura(NajaGrammarParser.CmdLeituraContext ctx) { }
+	@Override public void enterRead(NajaGrammarParser.ReadContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitCmdLeitura(NajaGrammarParser.CmdLeituraContext ctx) { }
+	@Override public void exitRead(NajaGrammarParser.ReadContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCmdEscrita(NajaGrammarParser.CmdEscritaContext ctx) { }
+	@Override public void enterWrite(NajaGrammarParser.WriteContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitCmdEscrita(NajaGrammarParser.CmdEscritaContext ctx) { }
+	@Override public void exitWrite(NajaGrammarParser.WriteContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCmdIf(NajaGrammarParser.CmdIfContext ctx) { }
+	@Override public void enterIf(NajaGrammarParser.IfContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitCmdIf(NajaGrammarParser.CmdIfContext ctx) { }
+	@Override public void exitIf(NajaGrammarParser.IfContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCmdWhile(NajaGrammarParser.CmdWhileContext ctx) { }
+	@Override public void enterWhile(NajaGrammarParser.WhileContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitCmdWhile(NajaGrammarParser.CmdWhileContext ctx) { }
+	@Override public void exitWhile(NajaGrammarParser.WhileContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterExpr(NajaGrammarParser.ExprContext ctx) { }
+	@Override public void enterExpression(NajaGrammarParser.ExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitExpr(NajaGrammarParser.ExprContext ctx) { }
+	@Override public void exitExpression(NajaGrammarParser.ExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterTermo(NajaGrammarParser.TermoContext ctx) { }
+	@Override public void enterTerm(NajaGrammarParser.TermContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitTermo(NajaGrammarParser.TermoContext ctx) { }
+	@Override public void exitTerm(NajaGrammarParser.TermContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterTermol(NajaGrammarParser.TermolContext ctx) { }
+	@Override public void enterTerml(NajaGrammarParser.TermlContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitTermol(NajaGrammarParser.TermolContext ctx) { }
+	@Override public void exitTerml(NajaGrammarParser.TermlContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterExprl(NajaGrammarParser.ExprlContext ctx) { }
+	@Override public void enterExpressionl(NajaGrammarParser.ExpressionlContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitExprl(NajaGrammarParser.ExprlContext ctx) { }
+	@Override public void exitExpressionl(NajaGrammarParser.ExpressionlContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFator(NajaGrammarParser.FatorContext ctx) { }
+	@Override public void enterFactor(NajaGrammarParser.FactorContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFator(NajaGrammarParser.FatorContext ctx) { }
+	@Override public void exitFactor(NajaGrammarParser.FactorContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

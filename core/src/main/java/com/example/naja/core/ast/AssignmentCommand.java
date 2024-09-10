@@ -2,14 +2,14 @@ package com.example.naja.core.ast;
 
 import com.example.naja.core.types.Var;
 
-public class AttCommand extends Command {
+public class AssignmentCommand extends Command {
     private String expression;
     private Var var;
 
-    public AttCommand() {
+    public AssignmentCommand() {
     }
 
-    public AttCommand(String expression, Var var) {
+    public AssignmentCommand(String expression, Var var) {
         this.expression = expression;
         this.var = var;
     }

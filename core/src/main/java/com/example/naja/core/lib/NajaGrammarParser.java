@@ -27,37 +27,37 @@ public class NajaGrammarParser extends Parser {
 		new PredictionContextCache();
 	public static final int
 		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
-		T__9=10, T__10=11, T__11=12, T__12=13, T__13=14, T__14=15, T__15=16, OP_SUM=17, 
-		OP_SUB=18, OP_MUL=19, OP_DIV=20, OP_AT=21, OP_REL=22, ID=23, NUM=24, TEXTO=25, 
-		WS=26, AP=27, FP=28, VIRG=29, PV=30, DP=31;
+		T__9=10, T__10=11, T__11=12, T__12=13, T__13=14, T__14=15, T__15=16, SUM_OP=17, 
+		SUBTRACTION_OP=18, MULTIPLICATION_OP=19, DIVISION_OP=20, ASSIGNMENT_OP=21, 
+		COMPARISON_OP=22, ID=23, NUM=24, TEXT=25, WHITE_SPACE=26, LEFT_PAREN=27, 
+		RIGHT_PAREN=28, COMMA=29, SEMICOLON=30, COLON=31;
 	public static final int
-		RULE_programa = 0, RULE_declaravar = 1, RULE_comando = 2, RULE_cmdAttrib = 3, 
-		RULE_cmdLeitura = 4, RULE_cmdEscrita = 5, RULE_cmdIf = 6, RULE_cmdWhile = 7, 
-		RULE_expr = 8, RULE_termo = 9, RULE_termol = 10, RULE_exprl = 11, RULE_fator = 12;
+		RULE_program = 0, RULE_declaration = 1, RULE_command = 2, RULE_assignment = 3, 
+		RULE_read = 4, RULE_write = 5, RULE_if = 6, RULE_while = 7, RULE_expression = 8, 
+		RULE_term = 9, RULE_terml = 10, RULE_expressionl = 11, RULE_factor = 12;
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"programa", "declaravar", "comando", "cmdAttrib", "cmdLeitura", "cmdEscrita", 
-			"cmdIf", "cmdWhile", "expr", "termo", "termol", "exprl", "fator"
+			"program", "declaration", "command", "assignment", "read", "write", "if", 
+			"while", "expression", "term", "terml", "expressionl", "factor"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "'programa'", "'inicio'", "'fim'", "'fimprog'", "'declare'", "'number'", 
-			"'text'", "'leia'", "'escreva'", "'se'", "'entao'", "'senao'", "'fimse'", 
-			"'enquanto'", "'fa\\u00E7a'", "'fimfa\\u00E7a'", "'+'", "'-'", "'*'", 
-			"'/'", "':='", null, null, null, null, null, "'('", "')'", "','", "';'", 
-			"':'"
+			null, "'program'", "'begin'", "'end'", "'endprogram'", "'declare'", "'number'", 
+			"'text'", "'read'", "'write'", "'if'", "'then'", "'else'", "'endif'", 
+			"'while'", "'do'", "'endwhile'", "'+'", "'-'", "'*'", "'/'", "':='", 
+			null, null, null, null, null, "'('", "')'", "','", "';'", "':'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
 			null, null, null, null, null, null, null, null, null, null, null, null, 
-			null, null, null, null, null, "OP_SUM", "OP_SUB", "OP_MUL", "OP_DIV", 
-			"OP_AT", "OP_REL", "ID", "NUM", "TEXTO", "WS", "AP", "FP", "VIRG", "PV", 
-			"DP"
+			null, null, null, null, null, "SUM_OP", "SUBTRACTION_OP", "MULTIPLICATION_OP", 
+			"DIVISION_OP", "ASSIGNMENT_OP", "COMPARISON_OP", "ID", "NUM", "TEXT", 
+			"WHITE_SPACE", "LEFT_PAREN", "RIGHT_PAREN", "COMMA", "SEMICOLON", "COLON"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -112,21 +112,21 @@ public class NajaGrammarParser extends Parser {
 	private Types currentType;
 	private Types leftType = null , rightType = null;
 	private Program program = new Program();
-	private String strExpr = "";
-	private String strAttr = "";
+	private String expressionStr = "";
+	private String assignmentStr = "";
 	private IfCommand currentIfCommand;
 	private Stack<ArrayList<Command>> stack = new Stack<ArrayList<Command>>();
 	private Stack<AbstractExpression> abeStack = new Stack<AbstractExpression>();
-	private AbstractExpression topo = null;
+	private AbstractExpression top = null;
 
-	public void updateType() {
+	public void updateTypes() {
 	    for (Var v: currentDec) {
 	        v.setType(currentType);
 	        symbolTable.put(v.getId(), v);
 	    }
 	}
 
-	public void exibirVar() {
+	public void showVariables() {
 	    for (String id: symbolTable.keySet()) {
 	        System.out.println(symbolTable.get(id));
 	    }
@@ -141,17 +141,17 @@ public class NajaGrammarParser extends Parser {
 	}
 
 	public double generateValue() {
-	    if (topo == null) {
-	        topo = abeStack.pop();
+	    if (top == null) {
+	        top = abeStack.pop();
 	    }
-	    return topo.evaluate();
+	    return top.evaluate();
 	}
 
 	public String generateJSON() {
-	    if (topo == null) {
-	        topo = abeStack.pop();
+	    if (top == null) {
+	        top = abeStack.pop();
 	    }
-	    return topo.toJson();
+	    return top.toJson();
 	}
 
 	public void checkUnusedVariables() {
@@ -168,37 +168,37 @@ public class NajaGrammarParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ProgramaContext extends ParserRuleContext {
+	public static class ProgramContext extends ParserRuleContext {
 		public TerminalNode ID() { return getToken(NajaGrammarParser.ID, 0); }
-		public List<DeclaravarContext> declaravar() {
-			return getRuleContexts(DeclaravarContext.class);
+		public List<DeclarationContext> declaration() {
+			return getRuleContexts(DeclarationContext.class);
 		}
-		public DeclaravarContext declaravar(int i) {
-			return getRuleContext(DeclaravarContext.class,i);
+		public DeclarationContext declaration(int i) {
+			return getRuleContext(DeclarationContext.class,i);
 		}
-		public List<ComandoContext> comando() {
-			return getRuleContexts(ComandoContext.class);
+		public List<CommandContext> command() {
+			return getRuleContexts(CommandContext.class);
 		}
-		public ComandoContext comando(int i) {
-			return getRuleContext(ComandoContext.class,i);
+		public CommandContext command(int i) {
+			return getRuleContext(CommandContext.class,i);
 		}
-		public ProgramaContext(ParserRuleContext parent, int invokingState) {
+		public ProgramContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_programa; }
+		@Override public int getRuleIndex() { return RULE_program; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).enterPrograma(this);
+			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).enterProgram(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).exitPrograma(this);
+			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).exitProgram(this);
 		}
 	}
 
-	public final ProgramaContext programa() throws RecognitionException {
-		ProgramaContext _localctx = new ProgramaContext(_ctx, getState());
-		enterRule(_localctx, 0, RULE_programa);
+	public final ProgramContext program() throws RecognitionException {
+		ProgramContext _localctx = new ProgramContext(_ctx, getState());
+		enterRule(_localctx, 0, RULE_program);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
@@ -208,9 +208,9 @@ public class NajaGrammarParser extends Parser {
 			setState(27);
 			match(ID);
 			   
-			                            program.setName(_input.LT(-1).getText()); 
-			                            stack.push(new ArrayList<Command>());
-			                        
+			        program.setName(_input.LT(-1).getText()); 
+			        stack.push(new ArrayList<Command>());
+			    
 			setState(30); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
@@ -218,7 +218,7 @@ public class NajaGrammarParser extends Parser {
 				{
 				{
 				setState(29);
-				declaravar();
+				declaration();
 				}
 				}
 				setState(32); 
@@ -234,7 +234,7 @@ public class NajaGrammarParser extends Parser {
 				{
 				{
 				setState(35);
-				comando();
+				command();
 				}
 				}
 				setState(38); 
@@ -246,10 +246,10 @@ public class NajaGrammarParser extends Parser {
 			setState(41);
 			match(T__3);
 
-			              program.setSymbolTable(symbolTable);
-			              program.setCommandList(stack.pop());
-			              checkUnusedVariables();
-			            
+			        program.setSymbolTable(symbolTable);
+			        program.setCommandList(stack.pop());
+			        checkUnusedVariables();
+			    
 			}
 		}
 		catch (RecognitionException re) {
@@ -264,34 +264,34 @@ public class NajaGrammarParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class DeclaravarContext extends ParserRuleContext {
+	public static class DeclarationContext extends ParserRuleContext {
 		public List<TerminalNode> ID() { return getTokens(NajaGrammarParser.ID); }
 		public TerminalNode ID(int i) {
 			return getToken(NajaGrammarParser.ID, i);
 		}
-		public TerminalNode DP() { return getToken(NajaGrammarParser.DP, 0); }
-		public TerminalNode PV() { return getToken(NajaGrammarParser.PV, 0); }
-		public List<TerminalNode> VIRG() { return getTokens(NajaGrammarParser.VIRG); }
-		public TerminalNode VIRG(int i) {
-			return getToken(NajaGrammarParser.VIRG, i);
+		public TerminalNode COLON() { return getToken(NajaGrammarParser.COLON, 0); }
+		public TerminalNode SEMICOLON() { return getToken(NajaGrammarParser.SEMICOLON, 0); }
+		public List<TerminalNode> COMMA() { return getTokens(NajaGrammarParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(NajaGrammarParser.COMMA, i);
 		}
-		public DeclaravarContext(ParserRuleContext parent, int invokingState) {
+		public DeclarationContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_declaravar; }
+		@Override public int getRuleIndex() { return RULE_declaration; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).enterDeclaravar(this);
+			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).enterDeclaration(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).exitDeclaravar(this);
+			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).exitDeclaration(this);
 		}
 	}
 
-	public final DeclaravarContext declaravar() throws RecognitionException {
-		DeclaravarContext _localctx = new DeclaravarContext(_ctx, getState());
-		enterRule(_localctx, 2, RULE_declaravar);
+	public final DeclarationContext declaration() throws RecognitionException {
+		DeclarationContext _localctx = new DeclarationContext(_ctx, getState());
+		enterRule(_localctx, 2, RULE_declaration);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
@@ -299,26 +299,26 @@ public class NajaGrammarParser extends Parser {
 			setState(44);
 			match(T__4);
 
-			                    currentDec.clear();
-			                
+			        currentDec.clear();
+			    
 			setState(46);
 			match(ID);
 			 
-			                    currentDec.add(new Var(_input.LT(-1).getText()));
-			                
+			        currentDec.add(new Var(_input.LT(-1).getText()));
+			    
 			setState(53);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (_la==VIRG) {
+			while (_la==COMMA) {
 				{
 				{
 				setState(48);
-				match(VIRG);
+				match(COMMA);
 				setState(49);
 				match(ID);
 				 
-				                    currentDec.add(new Var(_input.LT(-1).getText()));
-				                
+				            currentDec.add(new Var(_input.LT(-1).getText()));
+				        
 				}
 				}
 				setState(55);
@@ -326,7 +326,7 @@ public class NajaGrammarParser extends Parser {
 				_la = _input.LA(1);
 			}
 			setState(56);
-			match(DP);
+			match(COLON);
 			setState(61);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
@@ -335,8 +335,8 @@ public class NajaGrammarParser extends Parser {
 				setState(57);
 				match(T__5);
 
-				                    currentType = Types.NUMBER;
-				                
+				            currentType = Types.NUMBER;
+				        
 				}
 				break;
 			case T__6:
@@ -344,18 +344,18 @@ public class NajaGrammarParser extends Parser {
 				setState(59);
 				match(T__6);
 
-				                    currentType = Types.TEXT;
-				                 
+				            currentType = Types.TEXT;
+				        
 				}
 				break;
 			default:
 				throw new NoViableAltException(this);
 			}
 
-			                    updateType();
-			                
+			        updateTypes();
+			    
 			setState(64);
-			match(PV);
+			match(SEMICOLON);
 			}
 		}
 		catch (RecognitionException re) {
@@ -370,39 +370,39 @@ public class NajaGrammarParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ComandoContext extends ParserRuleContext {
-		public CmdAttribContext cmdAttrib() {
-			return getRuleContext(CmdAttribContext.class,0);
+	public static class CommandContext extends ParserRuleContext {
+		public AssignmentContext assignment() {
+			return getRuleContext(AssignmentContext.class,0);
 		}
-		public CmdLeituraContext cmdLeitura() {
-			return getRuleContext(CmdLeituraContext.class,0);
+		public ReadContext read() {
+			return getRuleContext(ReadContext.class,0);
 		}
-		public CmdEscritaContext cmdEscrita() {
-			return getRuleContext(CmdEscritaContext.class,0);
+		public WriteContext write() {
+			return getRuleContext(WriteContext.class,0);
 		}
-		public CmdIfContext cmdIf() {
-			return getRuleContext(CmdIfContext.class,0);
+		public IfContext if_() {
+			return getRuleContext(IfContext.class,0);
 		}
-		public CmdWhileContext cmdWhile() {
-			return getRuleContext(CmdWhileContext.class,0);
+		public WhileContext while_() {
+			return getRuleContext(WhileContext.class,0);
 		}
-		public ComandoContext(ParserRuleContext parent, int invokingState) {
+		public CommandContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_comando; }
+		@Override public int getRuleIndex() { return RULE_command; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).enterComando(this);
+			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).enterCommand(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).exitComando(this);
+			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).exitCommand(this);
 		}
 	}
 
-	public final ComandoContext comando() throws RecognitionException {
-		ComandoContext _localctx = new ComandoContext(_ctx, getState());
-		enterRule(_localctx, 4, RULE_comando);
+	public final CommandContext command() throws RecognitionException {
+		CommandContext _localctx = new CommandContext(_ctx, getState());
+		enterRule(_localctx, 4, RULE_command);
 		try {
 			setState(71);
 			_errHandler.sync(this);
@@ -411,35 +411,35 @@ public class NajaGrammarParser extends Parser {
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(66);
-				cmdAttrib();
+				assignment();
 				}
 				break;
 			case T__7:
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(67);
-				cmdLeitura();
+				read();
 				}
 				break;
 			case T__8:
 				enterOuterAlt(_localctx, 3);
 				{
 				setState(68);
-				cmdEscrita();
+				write();
 				}
 				break;
 			case T__9:
 				enterOuterAlt(_localctx, 4);
 				{
 				setState(69);
-				cmdIf();
+				if_();
 				}
 				break;
 			case T__13:
 				enterOuterAlt(_localctx, 5);
 				{
 				setState(70);
-				cmdWhile();
+				while_();
 				}
 				break;
 			default:
@@ -458,64 +458,66 @@ public class NajaGrammarParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class CmdAttribContext extends ParserRuleContext {
+	public static class AssignmentContext extends ParserRuleContext {
 		public TerminalNode ID() { return getToken(NajaGrammarParser.ID, 0); }
-		public TerminalNode OP_AT() { return getToken(NajaGrammarParser.OP_AT, 0); }
-		public ExprContext expr() {
-			return getRuleContext(ExprContext.class,0);
+		public TerminalNode ASSIGNMENT_OP() { return getToken(NajaGrammarParser.ASSIGNMENT_OP, 0); }
+		public ExpressionContext expression() {
+			return getRuleContext(ExpressionContext.class,0);
 		}
-		public TerminalNode PV() { return getToken(NajaGrammarParser.PV, 0); }
-		public CmdAttribContext(ParserRuleContext parent, int invokingState) {
+		public TerminalNode SEMICOLON() { return getToken(NajaGrammarParser.SEMICOLON, 0); }
+		public AssignmentContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_cmdAttrib; }
+		@Override public int getRuleIndex() { return RULE_assignment; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).enterCmdAttrib(this);
+			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).enterAssignment(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).exitCmdAttrib(this);
+			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).exitAssignment(this);
 		}
 	}
 
-	public final CmdAttribContext cmdAttrib() throws RecognitionException {
-		CmdAttribContext _localctx = new CmdAttribContext(_ctx, getState());
-		enterRule(_localctx, 6, RULE_cmdAttrib);
+	public final AssignmentContext assignment() throws RecognitionException {
+		AssignmentContext _localctx = new AssignmentContext(_ctx, getState());
+		enterRule(_localctx, 6, RULE_assignment);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(73);
 			match(ID);
 			 
-			                    if (!isDeclared(_input.LT(-1).getText())) {
-			                    throw new NajaSemanticException("Undeclared Variable: " +_input.LT(-1).getText());
-			                  }
-			                  symbolTable.get(_input.LT(-1).getText()).setInitialized(true);
-			                  leftType = symbolTable.get(_input.LT(-1).getText()).getType();
+			        String lastTokenText = _input.LT(-1).getText();
+			        if (!isDeclared(lastTokenText)) {
+			            throw new NajaSemanticException("Undeclared Variable: " + lastTokenText);
+			        }
 
-			                  AttCommand cmdAtt = new AttCommand();
-			                  cmdAtt.setVar(symbolTable.get(_input.LT(-1).getText()));
-			                  strAttr = "";
+			        Var symbol = symbolTable.get(lastTokenText);
+			        symbol.setInitialized(true);
 
-			                
+			        leftType = symbolTable.get(_input.LT(-1).getText()).getType();
+
+			        AssignmentCommand assignment = new AssignmentCommand();
+			        assignment.setVar(symbol);
+
+			        assignmentStr = "";
+			    
 			setState(75);
-			match(OP_AT);
+			match(ASSIGNMENT_OP);
 			setState(76);
-			expr();
+			expression();
 
-			                  cmdAtt.setExpression(strAttr);
-			                  stack.peek().add(cmdAtt);
-			               
+			        assignment.setExpression(assignmentStr);
+			        stack.peek().add(assignment);
+			    
 			setState(78);
-			match(PV);
+			match(SEMICOLON);
 
-			                    //System.out.println("left side expression type = " + leftType );
-			                    //System.out.println("right side expression type = " + rightType) ;
-			                    if(leftType.getValue() < rightType.getValue()){
-			                        throw new NajaSemanticException("Type Mismatch on Assigment");
-			                    }
-			                
+			        if (leftType.getValue() < rightType.getValue()) {
+			            throw new NajaSemanticException("Type mismatch on assigment");
+			        }
+			    
 			}
 		}
 		catch (RecognitionException re) {
@@ -530,49 +532,53 @@ public class NajaGrammarParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class CmdLeituraContext extends ParserRuleContext {
-		public TerminalNode AP() { return getToken(NajaGrammarParser.AP, 0); }
+	public static class ReadContext extends ParserRuleContext {
+		public TerminalNode LEFT_PAREN() { return getToken(NajaGrammarParser.LEFT_PAREN, 0); }
 		public TerminalNode ID() { return getToken(NajaGrammarParser.ID, 0); }
-		public TerminalNode FP() { return getToken(NajaGrammarParser.FP, 0); }
-		public TerminalNode PV() { return getToken(NajaGrammarParser.PV, 0); }
-		public CmdLeituraContext(ParserRuleContext parent, int invokingState) {
+		public TerminalNode RIGHT_PAREN() { return getToken(NajaGrammarParser.RIGHT_PAREN, 0); }
+		public TerminalNode SEMICOLON() { return getToken(NajaGrammarParser.SEMICOLON, 0); }
+		public ReadContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_cmdLeitura; }
+		@Override public int getRuleIndex() { return RULE_read; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).enterCmdLeitura(this);
+			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).enterRead(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).exitCmdLeitura(this);
+			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).exitRead(this);
 		}
 	}
 
-	public final CmdLeituraContext cmdLeitura() throws RecognitionException {
-		CmdLeituraContext _localctx = new CmdLeituraContext(_ctx, getState());
-		enterRule(_localctx, 8, RULE_cmdLeitura);
+	public final ReadContext read() throws RecognitionException {
+		ReadContext _localctx = new ReadContext(_ctx, getState());
+		enterRule(_localctx, 8, RULE_read);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(81);
 			match(T__7);
 			setState(82);
-			match(AP);
+			match(LEFT_PAREN);
 			setState(83);
 			match(ID);
 			   
-			                            if (!isDeclared(_input.LT(-1).getText())) {
-			                                throw new NajaSemanticException("Undeclared Variable: " +_input.LT(-1).getText());
-			                            }
-			                            symbolTable.get(_input.LT(-1).getText()).setInitialized(true);
-			                            Command cmdRead = new ReadCommand(symbolTable.get(_input.LT(-1).getText()));
-			                            stack.peek().add(cmdRead);
-			                        
+			        String lastTokenText = _input.LT(-1).getText();
+			        if (!isDeclared(lastTokenText)) {
+			            throw new NajaSemanticException("Undeclared Variable: " + lastTokenText);
+			        }
+
+			        Var symbol = symbolTable.get(lastTokenText);
+			        symbol.setInitialized(true);
+
+			        Command readCommand = new ReadCommand(symbol);
+			        stack.peek().add(readCommand);
+			    
 			setState(85);
-			match(FP);
+			match(RIGHT_PAREN);
 			setState(86);
-			match(PV);
+			match(SEMICOLON);
 			}
 		}
 		catch (RecognitionException re) {
@@ -587,53 +593,52 @@ public class NajaGrammarParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class CmdEscritaContext extends ParserRuleContext {
-		public TerminalNode AP() { return getToken(NajaGrammarParser.AP, 0); }
-		public TerminalNode FP() { return getToken(NajaGrammarParser.FP, 0); }
-		public TerminalNode PV() { return getToken(NajaGrammarParser.PV, 0); }
-		public FatorContext fator() {
-			return getRuleContext(FatorContext.class,0);
+	public static class WriteContext extends ParserRuleContext {
+		public TerminalNode LEFT_PAREN() { return getToken(NajaGrammarParser.LEFT_PAREN, 0); }
+		public TerminalNode RIGHT_PAREN() { return getToken(NajaGrammarParser.RIGHT_PAREN, 0); }
+		public TerminalNode SEMICOLON() { return getToken(NajaGrammarParser.SEMICOLON, 0); }
+		public FactorContext factor() {
+			return getRuleContext(FactorContext.class,0);
 		}
-		public CmdEscritaContext(ParserRuleContext parent, int invokingState) {
+		public WriteContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_cmdEscrita; }
+		@Override public int getRuleIndex() { return RULE_write; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).enterCmdEscrita(this);
+			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).enterWrite(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).exitCmdEscrita(this);
+			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).exitWrite(this);
 		}
 	}
 
-	public final CmdEscritaContext cmdEscrita() throws RecognitionException {
-		CmdEscritaContext _localctx = new CmdEscritaContext(_ctx, getState());
-		enterRule(_localctx, 10, RULE_cmdEscrita);
+	public final WriteContext write() throws RecognitionException {
+		WriteContext _localctx = new WriteContext(_ctx, getState());
+		enterRule(_localctx, 10, RULE_write);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(88);
 			match(T__8);
 			setState(89);
-			match(AP);
+			match(LEFT_PAREN);
 			{
 			setState(90);
-			fator();
+			factor();
 			}
 
-			                        Command cmdWrite = new WriteCommand(_input.LT(-1).getText());
-			                                stack.peek().add(cmdWrite);
-
-			                      
+			        Command cmdWrite = new WriteCommand(_input.LT(-1).getText());
+			        stack.peek().add(cmdWrite);
+			    
 			setState(92);
-			match(FP);
+			match(RIGHT_PAREN);
 			setState(93);
-			match(PV);
+			match(SEMICOLON);
 
-			                            rightType = null;
-			                        
+			        rightType = null;
+			    
 			}
 		}
 		catch (RecognitionException re) {
@@ -648,66 +653,67 @@ public class NajaGrammarParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class CmdIfContext extends ParserRuleContext {
-		public TerminalNode AP() { return getToken(NajaGrammarParser.AP, 0); }
-		public List<ExprContext> expr() {
-			return getRuleContexts(ExprContext.class);
+	public static class IfContext extends ParserRuleContext {
+		public TerminalNode LEFT_PAREN() { return getToken(NajaGrammarParser.LEFT_PAREN, 0); }
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
 		}
-		public ExprContext expr(int i) {
-			return getRuleContext(ExprContext.class,i);
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
 		}
-		public TerminalNode OP_REL() { return getToken(NajaGrammarParser.OP_REL, 0); }
-		public TerminalNode FP() { return getToken(NajaGrammarParser.FP, 0); }
-		public List<ComandoContext> comando() {
-			return getRuleContexts(ComandoContext.class);
+		public TerminalNode COMPARISON_OP() { return getToken(NajaGrammarParser.COMPARISON_OP, 0); }
+		public TerminalNode RIGHT_PAREN() { return getToken(NajaGrammarParser.RIGHT_PAREN, 0); }
+		public List<CommandContext> command() {
+			return getRuleContexts(CommandContext.class);
 		}
-		public ComandoContext comando(int i) {
-			return getRuleContext(ComandoContext.class,i);
+		public CommandContext command(int i) {
+			return getRuleContext(CommandContext.class,i);
 		}
-		public CmdIfContext(ParserRuleContext parent, int invokingState) {
+		public IfContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_cmdIf; }
+		@Override public int getRuleIndex() { return RULE_if; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).enterCmdIf(this);
+			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).enterIf(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).exitCmdIf(this);
+			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).exitIf(this);
 		}
 	}
 
-	public final CmdIfContext cmdIf() throws RecognitionException {
-		CmdIfContext _localctx = new CmdIfContext(_ctx, getState());
-		enterRule(_localctx, 12, RULE_cmdIf);
+	public final IfContext if_() throws RecognitionException {
+		IfContext _localctx = new IfContext(_ctx, getState());
+		enterRule(_localctx, 12, RULE_if);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(96);
 			match(T__9);
-			   stack.push(new ArrayList<Command>());
-			                    strExpr = "";
-			                    currentIfCommand = new IfCommand();
-			                
+
+			        stack.push(new ArrayList<Command>());
+			        expressionStr = "";
+			        currentIfCommand = new IfCommand();
+			    
 			setState(98);
-			match(AP);
+			match(LEFT_PAREN);
 			setState(99);
-			expr();
+			expression();
 			setState(100);
-			match(OP_REL);
+			match(COMPARISON_OP);
 			 
-			                strExpr += _input.LT(-1).getText();
-			                strAttr += _input.LT(-1).getText();
-			               
+			        expressionStr += _input.LT(-1).getText();
+			        assignmentStr += _input.LT(-1).getText();
+			    
 			setState(102);
-			expr();
+			expression();
 			setState(103);
-			match(FP);
+			match(RIGHT_PAREN);
 			 
-			                currentIfCommand.setExpression(strExpr); 
-			              
+			        currentIfCommand.setExpression(expressionStr); 
+			    
 			setState(105);
 			match(T__10);
 			setState(107); 
@@ -717,7 +723,7 @@ public class NajaGrammarParser extends Parser {
 				{
 				{
 				setState(106);
-				comando();
+				command();
 				}
 				}
 				setState(109); 
@@ -725,8 +731,8 @@ public class NajaGrammarParser extends Parser {
 				_la = _input.LA(1);
 			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 8406784L) != 0) );
 
-			                currentIfCommand.setTrueList(stack.pop());
-			              
+			        currentIfCommand.setTrueList(stack.pop());
+			    
 			setState(121);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
@@ -735,8 +741,8 @@ public class NajaGrammarParser extends Parser {
 				setState(112);
 				match(T__11);
 
-				                stack.push(new ArrayList<Command>());
-				              
+				            stack.push(new ArrayList<Command>());
+				        
 				setState(115); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
@@ -744,7 +750,7 @@ public class NajaGrammarParser extends Parser {
 					{
 					{
 					setState(114);
-					comando();
+					command();
 					}
 					}
 					setState(117); 
@@ -752,16 +758,16 @@ public class NajaGrammarParser extends Parser {
 					_la = _input.LA(1);
 				} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 8406784L) != 0) );
 
-				                currentIfCommand.setFalseList(stack.pop());
-				              
+				            currentIfCommand.setFalseList(stack.pop());
+				        
 				}
 			}
 
 			setState(123);
 			match(T__12);
 
-			                    stack.peek().add(currentIfCommand);
-			                
+			        stack.peek().add(currentIfCommand);
+			    
 			}
 		}
 		catch (RecognitionException re) {
@@ -776,39 +782,39 @@ public class NajaGrammarParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class CmdWhileContext extends ParserRuleContext {
-		public TerminalNode AP() { return getToken(NajaGrammarParser.AP, 0); }
-		public List<ExprContext> expr() {
-			return getRuleContexts(ExprContext.class);
+	public static class WhileContext extends ParserRuleContext {
+		public TerminalNode LEFT_PAREN() { return getToken(NajaGrammarParser.LEFT_PAREN, 0); }
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
 		}
-		public ExprContext expr(int i) {
-			return getRuleContext(ExprContext.class,i);
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
 		}
-		public TerminalNode OP_REL() { return getToken(NajaGrammarParser.OP_REL, 0); }
-		public TerminalNode FP() { return getToken(NajaGrammarParser.FP, 0); }
-		public List<ComandoContext> comando() {
-			return getRuleContexts(ComandoContext.class);
+		public TerminalNode COMPARISON_OP() { return getToken(NajaGrammarParser.COMPARISON_OP, 0); }
+		public TerminalNode RIGHT_PAREN() { return getToken(NajaGrammarParser.RIGHT_PAREN, 0); }
+		public List<CommandContext> command() {
+			return getRuleContexts(CommandContext.class);
 		}
-		public ComandoContext comando(int i) {
-			return getRuleContext(ComandoContext.class,i);
+		public CommandContext command(int i) {
+			return getRuleContext(CommandContext.class,i);
 		}
-		public CmdWhileContext(ParserRuleContext parent, int invokingState) {
+		public WhileContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_cmdWhile; }
+		@Override public int getRuleIndex() { return RULE_while; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).enterCmdWhile(this);
+			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).enterWhile(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).exitCmdWhile(this);
+			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).exitWhile(this);
 		}
 	}
 
-	public final CmdWhileContext cmdWhile() throws RecognitionException {
-		CmdWhileContext _localctx = new CmdWhileContext(_ctx, getState());
-		enterRule(_localctx, 14, RULE_cmdWhile);
+	public final WhileContext while_() throws RecognitionException {
+		WhileContext _localctx = new WhileContext(_ctx, getState());
+		enterRule(_localctx, 14, RULE_while);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
@@ -816,15 +822,15 @@ public class NajaGrammarParser extends Parser {
 			setState(126);
 			match(T__13);
 			setState(127);
-			match(AP);
+			match(LEFT_PAREN);
 			setState(128);
-			expr();
+			expression();
 			setState(129);
-			match(OP_REL);
+			match(COMPARISON_OP);
 			setState(130);
-			expr();
+			expression();
 			setState(131);
-			match(FP);
+			match(RIGHT_PAREN);
 			setState(132);
 			match(T__14);
 			setState(134); 
@@ -834,7 +840,7 @@ public class NajaGrammarParser extends Parser {
 				{
 				{
 				setState(133);
-				comando();
+				command();
 				}
 				}
 				setState(136); 
@@ -857,40 +863,41 @@ public class NajaGrammarParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ExprContext extends ParserRuleContext {
-		public TermoContext termo() {
-			return getRuleContext(TermoContext.class,0);
+	public static class ExpressionContext extends ParserRuleContext {
+		public TermContext term() {
+			return getRuleContext(TermContext.class,0);
 		}
-		public ExprlContext exprl() {
-			return getRuleContext(ExprlContext.class,0);
+		public ExpressionlContext expressionl() {
+			return getRuleContext(ExpressionlContext.class,0);
 		}
-		public ExprContext(ParserRuleContext parent, int invokingState) {
+		public ExpressionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_expr; }
+		@Override public int getRuleIndex() { return RULE_expression; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).enterExpr(this);
+			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).enterExpression(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).exitExpr(this);
+			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).exitExpression(this);
 		}
 	}
 
-	public final ExprContext expr() throws RecognitionException {
-		ExprContext _localctx = new ExprContext(_ctx, getState());
-		enterRule(_localctx, 16, RULE_expr);
+	public final ExpressionContext expression() throws RecognitionException {
+		ExpressionContext _localctx = new ExpressionContext(_ctx, getState());
+		enterRule(_localctx, 16, RULE_expression);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(140);
-			termo();
-			strExpr += _input.LT(-1).getText();
-			                  strAttr += _input.LT(-1).getText();
-			                
+			term();
+
+			        expressionStr += _input.LT(-1).getText();
+			        assignmentStr += _input.LT(-1).getText();
+			    
 			setState(142);
-			exprl();
+			expressionl();
 			}
 		}
 		catch (RecognitionException re) {
@@ -905,37 +912,37 @@ public class NajaGrammarParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class TermoContext extends ParserRuleContext {
-		public FatorContext fator() {
-			return getRuleContext(FatorContext.class,0);
+	public static class TermContext extends ParserRuleContext {
+		public FactorContext factor() {
+			return getRuleContext(FactorContext.class,0);
 		}
-		public TermolContext termol() {
-			return getRuleContext(TermolContext.class,0);
+		public TermlContext terml() {
+			return getRuleContext(TermlContext.class,0);
 		}
-		public TermoContext(ParserRuleContext parent, int invokingState) {
+		public TermContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_termo; }
+		@Override public int getRuleIndex() { return RULE_term; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).enterTermo(this);
+			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).enterTerm(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).exitTermo(this);
+			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).exitTerm(this);
 		}
 	}
 
-	public final TermoContext termo() throws RecognitionException {
-		TermoContext _localctx = new TermoContext(_ctx, getState());
-		enterRule(_localctx, 18, RULE_termo);
+	public final TermContext term() throws RecognitionException {
+		TermContext _localctx = new TermContext(_ctx, getState());
+		enterRule(_localctx, 18, RULE_term);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(144);
-			fator();
+			factor();
 			setState(145);
-			termol();
+			terml();
 			}
 		}
 		catch (RecognitionException re) {
@@ -950,38 +957,38 @@ public class NajaGrammarParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class TermolContext extends ParserRuleContext {
-		public List<FatorContext> fator() {
-			return getRuleContexts(FatorContext.class);
+	public static class TermlContext extends ParserRuleContext {
+		public List<FactorContext> factor() {
+			return getRuleContexts(FactorContext.class);
 		}
-		public FatorContext fator(int i) {
-			return getRuleContext(FatorContext.class,i);
+		public FactorContext factor(int i) {
+			return getRuleContext(FactorContext.class,i);
 		}
-		public List<TerminalNode> OP_MUL() { return getTokens(NajaGrammarParser.OP_MUL); }
-		public TerminalNode OP_MUL(int i) {
-			return getToken(NajaGrammarParser.OP_MUL, i);
+		public List<TerminalNode> MULTIPLICATION_OP() { return getTokens(NajaGrammarParser.MULTIPLICATION_OP); }
+		public TerminalNode MULTIPLICATION_OP(int i) {
+			return getToken(NajaGrammarParser.MULTIPLICATION_OP, i);
 		}
-		public List<TerminalNode> OP_DIV() { return getTokens(NajaGrammarParser.OP_DIV); }
-		public TerminalNode OP_DIV(int i) {
-			return getToken(NajaGrammarParser.OP_DIV, i);
+		public List<TerminalNode> DIVISION_OP() { return getTokens(NajaGrammarParser.DIVISION_OP); }
+		public TerminalNode DIVISION_OP(int i) {
+			return getToken(NajaGrammarParser.DIVISION_OP, i);
 		}
-		public TermolContext(ParserRuleContext parent, int invokingState) {
+		public TermlContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_termol; }
+		@Override public int getRuleIndex() { return RULE_terml; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).enterTermol(this);
+			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).enterTerml(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).exitTermol(this);
+			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).exitTerml(this);
 		}
 	}
 
-	public final TermolContext termol() throws RecognitionException {
-		TermolContext _localctx = new TermolContext(_ctx, getState());
-		enterRule(_localctx, 20, RULE_termol);
+	public final TermlContext terml() throws RecognitionException {
+		TermlContext _localctx = new TermlContext(_ctx, getState());
+		enterRule(_localctx, 20, RULE_terml);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
@@ -989,12 +996,12 @@ public class NajaGrammarParser extends Parser {
 			setState(154);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (_la==OP_MUL || _la==OP_DIV) {
+			while (_la==MULTIPLICATION_OP || _la==DIVISION_OP) {
 				{
 				{
 				setState(147);
 				_la = _input.LA(1);
-				if ( !(_la==OP_MUL || _la==OP_DIV) ) {
+				if ( !(_la==MULTIPLICATION_OP || _la==DIVISION_OP) ) {
 				_errHandler.recoverInline(this);
 				}
 				else {
@@ -1003,15 +1010,15 @@ public class NajaGrammarParser extends Parser {
 					consume();
 				}
 				 
-				                    strExpr += _input.LT(-1).getText();
-				                    strAttr += _input.LT(-1).getText();
-				                
+				        expressionStr += _input.LT(-1).getText();
+				        assignmentStr += _input.LT(-1).getText();
+				    
 				setState(149);
-				fator();
+				factor();
 				 
-				                    strExpr += _input.LT(-1).getText();
-				                    strAttr += _input.LT(-1).getText();
-				                
+				        expressionStr += _input.LT(-1).getText();
+				        assignmentStr += _input.LT(-1).getText();
+				    
 				}
 				}
 				setState(156);
@@ -1032,38 +1039,38 @@ public class NajaGrammarParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class ExprlContext extends ParserRuleContext {
-		public List<TermoContext> termo() {
-			return getRuleContexts(TermoContext.class);
+	public static class ExpressionlContext extends ParserRuleContext {
+		public List<TermContext> term() {
+			return getRuleContexts(TermContext.class);
 		}
-		public TermoContext termo(int i) {
-			return getRuleContext(TermoContext.class,i);
+		public TermContext term(int i) {
+			return getRuleContext(TermContext.class,i);
 		}
-		public List<TerminalNode> OP_SUM() { return getTokens(NajaGrammarParser.OP_SUM); }
-		public TerminalNode OP_SUM(int i) {
-			return getToken(NajaGrammarParser.OP_SUM, i);
+		public List<TerminalNode> SUM_OP() { return getTokens(NajaGrammarParser.SUM_OP); }
+		public TerminalNode SUM_OP(int i) {
+			return getToken(NajaGrammarParser.SUM_OP, i);
 		}
-		public List<TerminalNode> OP_SUB() { return getTokens(NajaGrammarParser.OP_SUB); }
-		public TerminalNode OP_SUB(int i) {
-			return getToken(NajaGrammarParser.OP_SUB, i);
+		public List<TerminalNode> SUBTRACTION_OP() { return getTokens(NajaGrammarParser.SUBTRACTION_OP); }
+		public TerminalNode SUBTRACTION_OP(int i) {
+			return getToken(NajaGrammarParser.SUBTRACTION_OP, i);
 		}
-		public ExprlContext(ParserRuleContext parent, int invokingState) {
+		public ExpressionlContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_exprl; }
+		@Override public int getRuleIndex() { return RULE_expressionl; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).enterExprl(this);
+			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).enterExpressionl(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).exitExprl(this);
+			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).exitExpressionl(this);
 		}
 	}
 
-	public final ExprlContext exprl() throws RecognitionException {
-		ExprlContext _localctx = new ExprlContext(_ctx, getState());
-		enterRule(_localctx, 22, RULE_exprl);
+	public final ExpressionlContext expressionl() throws RecognitionException {
+		ExpressionlContext _localctx = new ExpressionlContext(_ctx, getState());
+		enterRule(_localctx, 22, RULE_expressionl);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
@@ -1071,12 +1078,12 @@ public class NajaGrammarParser extends Parser {
 			setState(164);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (_la==OP_SUM || _la==OP_SUB) {
+			while (_la==SUM_OP || _la==SUBTRACTION_OP) {
 				{
 				{
 				setState(157);
 				_la = _input.LA(1);
-				if ( !(_la==OP_SUM || _la==OP_SUB) ) {
+				if ( !(_la==SUM_OP || _la==SUBTRACTION_OP) ) {
 				_errHandler.recoverInline(this);
 				}
 				else {
@@ -1085,15 +1092,15 @@ public class NajaGrammarParser extends Parser {
 					consume();
 				}
 				 
-				                strExpr += _input.LT(-1).getText();
-				                strAttr += _input.LT(-1).getText();
-				            
+				        expressionStr += _input.LT(-1).getText();
+				        assignmentStr += _input.LT(-1).getText();
+				    
 				setState(159);
-				termo();
+				term();
 				 
-				                 strExpr += _input.LT(-1).getText();
-				                 strAttr += _input.LT(-1).getText();
-				             
+				        expressionStr += _input.LT(-1).getText();
+				        assignmentStr += _input.LT(-1).getText();
+				    
 				}
 				}
 				setState(166);
@@ -1114,27 +1121,27 @@ public class NajaGrammarParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class FatorContext extends ParserRuleContext {
+	public static class FactorContext extends ParserRuleContext {
 		public TerminalNode ID() { return getToken(NajaGrammarParser.ID, 0); }
 		public TerminalNode NUM() { return getToken(NajaGrammarParser.NUM, 0); }
-		public TerminalNode TEXTO() { return getToken(NajaGrammarParser.TEXTO, 0); }
-		public FatorContext(ParserRuleContext parent, int invokingState) {
+		public TerminalNode TEXT() { return getToken(NajaGrammarParser.TEXT, 0); }
+		public FactorContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_fator; }
+		@Override public int getRuleIndex() { return RULE_factor; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).enterFator(this);
+			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).enterFactor(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).exitFator(this);
+			if ( listener instanceof NajaGrammarListener ) ((NajaGrammarListener)listener).exitFactor(this);
 		}
 	}
 
-	public final FatorContext fator() throws RecognitionException {
-		FatorContext _localctx = new FatorContext(_ctx, getState());
-		enterRule(_localctx, 24, RULE_fator);
+	public final FactorContext factor() throws RecognitionException {
+		FactorContext _localctx = new FactorContext(_ctx, getState());
+		enterRule(_localctx, 24, RULE_factor);
 		try {
 			setState(173);
 			_errHandler.sync(this);
@@ -1145,22 +1152,26 @@ public class NajaGrammarParser extends Parser {
 				setState(167);
 				match(ID);
 				 
-				                if (!isDeclared(_input.LT(-1).getText())) {
-				                    throw new NajaSemanticException("Undeclared Variable: " +_input.LT(-1).getText());
-				                  }
-				                  if (!symbolTable.get(_input.LT(-1).getText()).isInitialized()){
-				                    throw new NajaSemanticException("Variable: " +_input.LT(-1).getText() + " has no value assigned ");
-				                  }
-				                  if (rightType == null){
-				                    rightType = symbolTable.get(_input.LT(-1).getText()).getType();
-				                }
-				                  else{
-				                    if (symbolTable.get(_input.LT(-1).getText()).getType().getValue() > rightType.getValue()){
-				                      rightType = symbolTable.get(_input.LT(-1).getText()).getType();
-				                    }
-				                  }
-				                  symbolTable.get(_input.LT(-1).getText()).setUsed(true); 
-				              
+				        String lastTokenText = _input.LT(-1).getText();
+				        if (!isDeclared(lastTokenText)) {
+				            throw new NajaSemanticException("Undeclared variable: " + lastTokenText);
+				        }
+
+				        Var symbol = symbolTable.get(lastTokenText);
+				        if (!symbol.isInitialized()) {
+				            throw new NajaSemanticException("Variable: " +lastTokenText + " has no value assigned ");
+				        }
+
+				        if (rightType == null){
+				            rightType = symbolTable.get(lastTokenText).getType();
+				        } else {
+				            if (symbolTable.get(lastTokenText).getType().getValue() > rightType.getValue()){
+				                rightType = symbolTable.get(lastTokenText).getType();
+				            }
+				        }
+				        
+				        symbol.setUsed(true); 
+				    
 				}
 				break;
 			case NUM:
@@ -1169,32 +1180,30 @@ public class NajaGrammarParser extends Parser {
 				setState(169);
 				match(NUM);
 				 
-				                if (rightType == null) {
-				                  rightType = Types.NUMBER;
-				                  }
-				                  else{
-				                    if(rightType.getValue() < Types.NUMBER.getValue()){
-				                      rightType = Types.NUMBER;
-				                    }
-				                  }
-				                
+				        if (rightType == null) {
+				            rightType = Types.NUMBER;
+				        } else {
+				            if (rightType.getValue() < Types.NUMBER.getValue()) {
+				                rightType = Types.NUMBER;
+				            }
+				        }
+				    
 				}
 				break;
-			case TEXTO:
+			case TEXT:
 				enterOuterAlt(_localctx, 3);
 				{
 				setState(171);
-				match(TEXTO);
+				match(TEXT);
 				 
-				            if (rightType == null) {
-				                  rightType = Types.TEXT;
-				                  }
-				                  else{
-				                    if(rightType.getValue() < Types.TEXT.getValue()){
-				                      rightType = Types.TEXT;
-				                    }
-				                  }
-				                
+				        if (rightType == null) {
+				            rightType = Types.TEXT;
+				        } else {
+				            if (rightType.getValue() < Types.TEXT.getValue()) {
+				                rightType = Types.TEXT;
+				            }
+				        }
+				    
 				}
 				break;
 			default:

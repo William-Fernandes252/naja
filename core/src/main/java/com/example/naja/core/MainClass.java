@@ -31,7 +31,7 @@ public class MainClass {
 
             // chamar o parser
             System.out.println("Naja Compiler");
-            parser.programa();
+            parser.program();
             System.out.println("Compilation Success!");
 
             // geração de código
