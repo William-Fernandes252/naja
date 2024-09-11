@@ -33,7 +33,7 @@ public class AssignmentCommand extends Command {
     @Override
     public String generateTarget() {
         StringBuilder str = new StringBuilder();
-        str.append(var.getId() + " ");
+        str.append(var.getId());
         str.append(" = " + expression + ";\n");
         return str.toString();
     }
