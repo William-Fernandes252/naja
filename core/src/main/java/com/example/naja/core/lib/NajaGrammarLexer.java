@@ -110,6 +110,7 @@ public class NajaGrammarLexer extends Lexer {
 	private String expressionStr = "";
 	private String assignmentStr = "";
 	private IfCommand currentIfCommand;
+	private WhileCommand currentWhileCommand;
 	private Stack<ArrayList<Command>> stack = new Stack<ArrayList<Command>>();
 	private Stack<AbstractExpression> abeStack = new Stack<AbstractExpression>();
 	private AbstractExpression top = null;

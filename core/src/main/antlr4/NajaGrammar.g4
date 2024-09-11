@@ -19,6 +19,7 @@ private Program program = new Program();
 private String expressionStr = "";
 private String assignmentStr = "";
 private IfCommand currentIfCommand;
+private WhileCommand currentWhileCommand;
 private Stack<ArrayList<Command>> stack = new Stack<ArrayList<Command>>();
 private Stack<AbstractExpression> abeStack = new Stack<AbstractExpression>();
 private AbstractExpression top = null;
@@ -169,7 +170,20 @@ if:
     };
 
 while:
-	'while' LEFT_PAREN expression COMPARISON_OP expression RIGHT_PAREN 'do' command+ 'endwhile';
+	'while' {
+        stack.push(new ArrayList<Command>());
+        expressionStr = "";
+        currentWhileCommand = new WhileCommand();
+    } LEFT_PAREN expression COMPARISON_OP {
+        expressionStr += _input.LT(-1).getText();
+        assignmentStr += _input.LT(-1).getText();
+    } expression RIGHT_PAREN {
+        currentWhileCommand.setExpression(expressionStr);
+    } 'do' command+ {
+        currentWhileCommand.setCommandList(stack.pop());
+    } 'endwhile' {
+        stack.peek().add(currentWhileCommand);
+    };
 
 expression:
 	term {
