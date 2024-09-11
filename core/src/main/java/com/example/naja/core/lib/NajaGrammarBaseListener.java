@@ -1,6 +1,16 @@
 // Generated from NajaGrammar.g4 by ANTLR 4.13.2
 package com.example.naja.core.lib;
 
+    import java.util.ArrayList;
+    import java.util.HashMap;
+    import java.util.Stack;
+    import com.example.naja.core.types.*;
+    import com.example.naja.core.exceptions.*;
+    import com.example.naja.core.ast.*;
+    import com.example.naja.core.runtime.*;
+
+
+
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -24,6 +34,78 @@ public class NajaGrammarBaseListener implements NajaGrammarListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitPrograma(NajaGrammarParser.ProgramaContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterComando(NajaGrammarParser.ComandoContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitComando(NajaGrammarParser.ComandoContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCmdWhile(NajaGrammarParser.CmdWhileContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCmdWhile(NajaGrammarParser.CmdWhileContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCmdIf(NajaGrammarParser.CmdIfContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCmdIf(NajaGrammarParser.CmdIfContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCmdAttrib(NajaGrammarParser.CmdAttribContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCmdAttrib(NajaGrammarParser.CmdAttribContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCmdLeitura(NajaGrammarParser.CmdLeituraContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCmdLeitura(NajaGrammarParser.CmdLeituraContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCmdEscrita(NajaGrammarParser.CmdEscritaContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCmdEscrita(NajaGrammarParser.CmdEscritaContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
