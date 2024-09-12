@@ -25,7 +25,7 @@ public class JavaTarget extends Target {
     }
 
     @Override
-    public String prelude(Program program) {
+    public String head(Program program) {
         StringBuilder builder = new StringBuilder();
         builder.append("import java.util.Scanner;\n");
         builder.append("public class " + StringUtils.toCapitalized(program.getName()) + "{");
@@ -35,7 +35,7 @@ public class JavaTarget extends Target {
     }
 
     @Override
-    public String epilogue() {
+    public String footer() {
         return "}}";
     }
 
@@ -74,9 +74,7 @@ public class JavaTarget extends Target {
     public String generate(WhileCommand command) {
         StringBuilder builder = new StringBuilder();
         builder.append("while(" + command.getExpression().toString() + "){");
-        for (Command loopCommand : command.getCommandList()) {
-            builder.append(loopCommand);
-        }
+        builder.append(generate(command.getCommandList()));
         builder.append("}");
         return builder.toString();
     }

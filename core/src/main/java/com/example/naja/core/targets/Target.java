@@ -7,12 +7,6 @@ import com.example.naja.core.exceptions.*;
 import com.example.naja.core.ast.*;
 
 public abstract class Target {
-    /**
-     * Generate the prelude code for the target language.
-     * 
-     * @return the prelude code.
-     */
-    public abstract String prelude(Program program);
 
     /**
      * Get the list of supported commands for the target language.
@@ -29,9 +23,9 @@ public abstract class Target {
      */
     public String generate(Program program) {
         StringBuilder builder = new StringBuilder();
-        builder.append(prelude(program));
-        builder.append(generate(program.getCommandList()));
-        builder.append(epilogue());
+        builder.append(head(program));
+        builder.append(body(program));
+        builder.append(footer());
         return builder.toString();
     }
 
@@ -73,11 +67,29 @@ public abstract class Target {
     }
 
     /**
+     * Generate the header code for the target language.
+     * 
+     * @return the header code.
+     */
+    public String head(Program program) {
+        return "";
+    }
+
+    /**
+     * Generate the body code for the target language.
+     * 
+     * @return the body code.
+     */
+    public String body(Program program) {
+        return generate(program.getCommandList());
+    }
+
+    /**
      * Generate the epilogue code for the target language.
      * 
-     * @return the epilogue code.
+     * @return the footer code.
      */
-    public String epilogue() {
+    public String footer() {
         return "";
     }
 }
