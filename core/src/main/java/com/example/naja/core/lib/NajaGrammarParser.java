@@ -499,8 +499,7 @@ public class NajaGrammarParser extends Parser {
 
 			        leftType = symbolTable.get(_input.LT(-1).getText()).getType();
 
-			        AssignmentCommand assignment = new AssignmentCommand();
-			        assignment.setVar(symbol);
+			        AssignmentCommand assignment = new AssignmentCommand(null, symbol);
 
 			        assignmentStr = "";
 			    
@@ -630,8 +629,8 @@ public class NajaGrammarParser extends Parser {
 			factor();
 			}
 
-			        Command cmdWrite = new WriteCommand(_input.LT(-1).getText());
-			        stack.peek().add(cmdWrite);
+			        Command writeCommand = new WriteCommand(_input.LT(-1).getText());
+			        stack.peek().add(writeCommand);
 			    
 			setState(92);
 			match(RIGHT_PAREN);

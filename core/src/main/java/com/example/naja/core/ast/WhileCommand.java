@@ -29,15 +29,4 @@ public class WhileCommand extends Command {
     public void setCommandList(List<Command> commandList) {
         this.commandList = commandList;
     }
-
-    @Override
-    public String generateTarget() {
-        StringBuilder str = new StringBuilder();
-        str.append("while(" + expression + ") {\n");
-        for (Command cmd : commandList) {
-            str.append(cmd.generateTarget());
-        }
-        str.append("}\n");
-        return str.toString();
-    }
 }

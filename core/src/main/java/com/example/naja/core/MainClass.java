@@ -11,6 +11,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import com.example.naja.core.ast.Program;
 import com.example.naja.core.lib.NajaGrammarLexer;
 import com.example.naja.core.lib.NajaGrammarParser;
+import com.example.naja.core.targets.*;
 
 public class MainClass {
     public static void main(String[] args) {
@@ -36,19 +37,17 @@ public class MainClass {
 
             // geração de código
             Program program = parser.getProgram();
-
+            Target target = new JavaTarget();
             try {
                 File f = new File(program.getName() + ".java");
                 FileWriter fr = new FileWriter(f);
                 PrintWriter pr = new PrintWriter(fr);
-                pr.println(program.generateTarget());
+                pr.println(target.generate(program));
                 pr.close();
-
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-            System.out.println(program.generateTarget());
-
+            System.out.println(target.generate(program));
         } catch (Exception ex) {
             System.err.println("Error: " + ex.getMessage());
             // ex.printStackTrace();

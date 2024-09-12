@@ -29,12 +29,4 @@ public class AssignmentCommand extends Command {
     public void setVar(Var var) {
         this.var = var;
     }
-
-    @Override
-    public String generateTarget() {
-        StringBuilder str = new StringBuilder();
-        str.append(var.getId());
-        str.append(" = " + expression + ";\n");
-        return str.toString();
-    }
 }

@@ -1,25 +1,17 @@
 package com.example.naja.core.ast;
 
 public class WriteCommand extends Command {
-    private String content;
+    private String expression;
 
-    @Override
-    public String generateTarget() {
-        return "System.out.println(" + content + ");\n";
+    public String getExpression() {
+        return expression;
     }
 
-    public String getContent() {
-        return content;
+    public void setExpression(String expression) {
+        this.expression = expression;
     }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public WriteCommand() {
-    }
-
-    public WriteCommand(String content) {
-        this.content = content;
+    public WriteCommand(String expression) {
+        this.expression = expression;
     }
 }
