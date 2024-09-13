@@ -1,9 +1,8 @@
 package com.example.naja.restapi.services;
 
-import java.io.InputStream;
-
-import com.example.naja.restapi.Enums.SupportedLanguages;
+import com.example.naja.restapi.records.CompilationRequest;
+import com.example.naja.restapi.records.CompilationResult;
 
 public interface NajaCompilerServiceInterface {
-    String generateTarget(InputStream inputStream, SupportedLanguages language);
+    CompilationResult generateTarget(CompilationRequest compilationRequest);
 }
