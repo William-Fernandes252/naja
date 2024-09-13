@@ -7,13 +7,19 @@ import com.example.naja.core.exceptions.*;
 import com.example.naja.core.ast.*;
 
 public abstract class Target {
-
     /**
      * Get the list of supported commands for the target language.
      * 
      * @return the list of supported commands.
      */
     public abstract List<Class<? extends Command>> getSupportedCommands();
+
+    /**
+     * Get the file extension for the target language.
+     * 
+     * @return the file extension.
+     */
+    public abstract String getExtension();
 
     /**
      * Generate the code for the given program.

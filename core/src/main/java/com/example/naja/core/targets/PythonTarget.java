@@ -10,6 +10,7 @@ import com.example.naja.core.types.Var;
 public class PythonTarget extends Target {
     private static final List<Class<? extends Command>> supportedCommands = new ArrayList<Class<? extends Command>>();
     private static final int DEFAULT_INDENTATION_SIZE = 4;
+    private static final String EXTENSION = "py";
 
     static {
         supportedCommands.add(AssignmentCommand.class);
@@ -36,6 +37,10 @@ public class PythonTarget extends Target {
         return supportedCommands;
     }
 
+    public String getExtension() {
+        return EXTENSION;
+    }
+
     @Override
     public String head(Program program) {
         StringBuilder builder = new StringBuilder();
@@ -55,7 +60,7 @@ public class PythonTarget extends Target {
     public String footer() {
         String checkNameCode = "if __name__ == \"__main__\":\n";
         increaseIndentationLevel();
-        checkNameCode += getIdentation() + "main()";
+        checkNameCode += getIndentation() + "main()";
         decreaseIndentationLevel();
         return checkNameCode;
     }
@@ -83,7 +88,7 @@ public class PythonTarget extends Target {
         builder.append(generate(command.getTrueList()));
         decreaseIndentationLevel();
         if (command.getFalseList() != null && !command.getFalseList().isEmpty()) {
-            builder.append(getIdentation() + "else:\n");
+            builder.append(getIndentation() + "else:\n");
             increaseIndentationLevel();
             builder.append(generate(command.getFalseList()));
             decreaseIndentationLevel();
@@ -103,7 +108,7 @@ public class PythonTarget extends Target {
     public String generate(List<Command> commandList) {
         StringBuilder builder = new StringBuilder();
         for (Command command : commandList) {
-            builder.append(getIdentation() + generate(command) + "\n");
+            builder.append(getIndentation() + generate(command) + "\n");
         }
         return builder.toString();
     }
@@ -120,7 +125,7 @@ public class PythonTarget extends Target {
         this.indentationLevel = 0;
     }
 
-    private String getIdentation() {
+    private String getIndentation() {
         return " ".repeat(indentationLevel * indentationSize);
     }
 }

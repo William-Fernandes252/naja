@@ -10,6 +10,7 @@ import com.example.naja.core.utils.StringUtils;
 
 public class JavaTarget extends Target {
     private static final List<Class<? extends Command>> supportedCommands = new ArrayList<Class<? extends Command>>();
+    private static final String EXTENSION = "java";
 
     static {
         supportedCommands.add(AssignmentCommand.class);
@@ -22,6 +23,11 @@ public class JavaTarget extends Target {
     @Override
     public List<Class<? extends Command>> getSupportedCommands() {
         return supportedCommands;
+    }
+
+    @Override
+    public String getExtension() {
+        return EXTENSION;
     }
 
     @Override
