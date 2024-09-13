@@ -64,4 +64,8 @@ public class BinaryExpression extends AbstractExpression {
                 + right.toJson() + "}";
     }
 
+    @Override
+    public String toString() {
+        return "(" + left.toString() + operation + right.toString() + ")";
+    }
 }
