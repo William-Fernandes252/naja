@@ -23,3 +23,11 @@ mvn antlr4:antlr4 -f core/pom.xml
 ```
 
 to generate updated source files.
+
+## Contributors
+
+- Thiago Fernandes (11202130847)
+- Vitor Marques (11201722723)
+- William Fernandes (11202020043)
+
+[Video on YouTube](https://youtu.be/vJZVrc6aKe4)
