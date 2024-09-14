@@ -64,15 +64,12 @@ public class JavaTarget extends Target {
     public String generate(IfCommand command) {
         StringBuilder builder = new StringBuilder();
         builder.append("if(" + command.getExpression().toString() + "){");
-        for (Command trueCommand : command.getTrueList()) {
-            builder.append(generate(trueCommand));
-        }
+        builder.append(generate(command.getTrueList()));
         builder.append("}");
         if (command.getFalseList() != null && !command.getFalseList().isEmpty()) {
             builder.append("else {");
-            for (Command falseCommand : command.getFalseList()) {
-                builder.append(generate(falseCommand));
-            }
+            builder.append(generate(command.getFalseList()));
+            builder.append("}");
         }
         return builder.toString();
     }
