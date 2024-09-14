@@ -19,7 +19,7 @@ public class CompilationsController {
     }
 
     @PostMapping("/compile")
-    public CompilationResult compileToJava(@RequestBody @Valid CompilationRequest compilationRequest) {
+    public CompilationResult compile(@RequestBody @Valid CompilationRequest compilationRequest) throws Throwable {
         return this.najaCompilerService.generateTarget(compilationRequest);
     }
 }
