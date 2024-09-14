@@ -5,7 +5,6 @@ public class BinaryExpression extends AbstractExpression {
     private AbstractExpression left;
     private AbstractExpression right;
 
-    
     public BinaryExpression() {
     }
 
@@ -46,26 +45,27 @@ public class BinaryExpression extends AbstractExpression {
     @Override
     public double evaluate() {
         switch (this.operation) {
-            case '+':
-                return left.evaluate()+ right.evaluate();
-            case '-':
-                return left.evaluate()-right.evaluate();
-            case '*':
-                return left.evaluate() * right.evaluate();
-            case '/':
-                return left.evaluate() / right.evaluate();
-            default:
-                return 0;
+        case '+':
+            return left.evaluate() + right.evaluate();
+        case '-':
+            return left.evaluate() - right.evaluate();
+        case '*':
+            return left.evaluate() * right.evaluate();
+        case '/':
+            return left.evaluate() / right.evaluate();
+        default:
+            return 0;
         }
     }
 
     @Override
     public String toJson() {
-        return "{ \"operation\": \""+this.operation+"\""+","+
-                    "\"left\": "+left.toJson()+","+
-                    "\"right\": "+right.toJson()+
-                    "}";
+        return "{ \"operation\": \"" + this.operation + "\"" + "," + "\"left\": " + left.toJson() + "," + "\"right\": "
+                + right.toJson() + "}";
     }
 
-
+    @Override
+    public String toString() {
+        return "(" + left.toString() + operation + right.toString() + ")";
+    }
 }

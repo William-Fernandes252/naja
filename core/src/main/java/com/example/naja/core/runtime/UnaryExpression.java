@@ -1,7 +1,6 @@
 package com.example.naja.core.runtime;
 
 public class UnaryExpression extends AbstractExpression {
-
     private double value;
 
     public UnaryExpression(double value) {
@@ -19,7 +18,7 @@ public class UnaryExpression extends AbstractExpression {
 
     @Override
     public String toJson() {
-       return "{ \"value\": " + this.value + "}";
+        return "{ \"value\": " + this.value + "}";
     }
 
     public double getValue() {
@@ -30,4 +29,8 @@ public class UnaryExpression extends AbstractExpression {
         this.value = value;
     }
 
+    @Override
+    public String toString() {
+        return String.valueOf(value);
+    }
 }
