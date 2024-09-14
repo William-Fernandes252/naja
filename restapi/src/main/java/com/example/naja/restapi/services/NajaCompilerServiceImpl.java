@@ -4,8 +4,6 @@ import com.example.naja.core.lib.NajaGrammarParser;
 import com.example.naja.restapi.records.CompilationRequest;
 import com.example.naja.restapi.records.CompilationResult;
 
-import jakarta.validation.Valid;
-
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.springframework.stereotype.Service;
