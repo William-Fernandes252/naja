@@ -38,6 +38,15 @@
       <artifactId>core</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
+    <dependency>
+      <groupId>com.example.naja</groupId>
+      <artifactId>interfaces</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -54,11 +63,6 @@
 			<artifactId>spring-shell-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-    <dependency>
-      <groupId>com.example.naja</groupId>
-      <artifactId>interfaces</artifactId>
-      <version>1.0-SNAPSHOT</version>
-    </dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
