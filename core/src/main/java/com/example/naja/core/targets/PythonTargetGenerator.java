@@ -7,7 +7,10 @@ import com.example.naja.core.ast.*;
 import com.example.naja.core.types.Types;
 import com.example.naja.core.types.Var;
 
-public class PythonTarget extends Target {
+/**
+ * A target generator for the Python programming language.
+ */
+public class PythonTargetGenerator extends TargetGenerator {
     private static final List<Class<? extends Command>> supportedCommands = new ArrayList<Class<? extends Command>>();
     private static final int DEFAULT_INDENTATION_SIZE = 4;
     private static final String EXTENSION = "py";
@@ -23,11 +26,11 @@ public class PythonTarget extends Target {
     private int indentationLevel;
     private int indentationSize;
 
-    public PythonTarget() {
+    public PythonTargetGenerator() {
         this(DEFAULT_INDENTATION_SIZE);
     }
 
-    public PythonTarget(int indentationSize) {
+    public PythonTargetGenerator(int indentationSize) {
         this.indentationSize = indentationSize;
         this.indentationLevel = 0;
     }

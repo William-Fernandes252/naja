@@ -2,9 +2,9 @@ package com.example.naja.restapi.services;
 
 import com.example.naja.core.api.Compiler;
 import com.example.naja.core.api.Result;
-import com.example.naja.core.targets.JavaTarget;
-import com.example.naja.core.targets.PythonTarget;
-import com.example.naja.core.targets.Target;
+import com.example.naja.core.targets.JavaTargetGenerator;
+import com.example.naja.core.targets.PythonTargetGenerator;
+import com.example.naja.core.targets.TargetGenerator;
 import com.example.naja.restapi.records.CompilationRequest;
 import com.example.naja.restapi.records.CompilationResult;
 
@@ -17,8 +17,8 @@ public class NajaCompilerServiceImpl implements NajaCompilerServiceInterface {
     @Override
     public CompilationResult generateTarget(CompilationRequest compilationRequest) throws Throwable {
         String code = compilationRequest.getCode();
-        Target target = Objects.equals(compilationRequest.getTarget(), "python") ? new PythonTarget()
-                : new JavaTarget();
+        TargetGenerator target = Objects.equals(compilationRequest.getTarget(), "python") ? new PythonTargetGenerator()
+                : new JavaTargetGenerator();
         Compiler compiler = new Compiler(target);
         Result result = compiler.compile(code);
         if (result.error().isPresent()) {

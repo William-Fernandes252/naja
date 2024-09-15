@@ -7,14 +7,14 @@ import java.io.InputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 
 import com.example.naja.core.lib.*;
-import com.example.naja.core.targets.Target;
+import com.example.naja.core.targets.TargetGenerator;
 
 public class Compiler {
-    private Target target;
+    private TargetGenerator target;
     private NajaGrammarLexer lexer;
     private NajaGrammarParser parser;
 
-    public Compiler(Target target) {
+    public Compiler(TargetGenerator target) {
         setTarget(target);
     }
 
@@ -46,11 +46,11 @@ public class Compiler {
         return Result.success(getParser().getProgram(), getTarget().generate(getParser().getProgram()));
     }
 
-    public Target getTarget() {
+    public TargetGenerator getTarget() {
         return target;
     }
 
-    private void setTarget(Target target) {
+    private void setTarget(TargetGenerator target) {
         this.target = target;
     }
 

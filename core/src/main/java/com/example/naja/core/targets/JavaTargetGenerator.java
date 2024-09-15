@@ -8,7 +8,7 @@ import com.example.naja.core.types.Types;
 import com.example.naja.core.types.Var;
 import com.example.naja.core.utils.StringUtils;
 
-public class JavaTarget extends Target {
+public class JavaTargetGenerator extends TargetGenerator {
     private static final List<Class<? extends Command>> supportedCommands = new ArrayList<Class<? extends Command>>();
     private static final String EXTENSION = "java";
 
