@@ -11,7 +11,7 @@ import com.example.naja.core.targets.*;
 
 public class App {
     public static void main(String[] args) {
-        Target target = new JavaTarget();
+        TargetGenerator target = new JavaTargetGenerator();
         Result result = new Compiler(target).compile(new File("input.naja"));
         if (result.success()) {
             String code = result.code().get();

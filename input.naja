@@ -1,0 +1,28 @@
+program myProgram
+declare a, x: number;
+declare y: text;
+begin
+    write ("Hello World");
+    a := 3;
+    read(x);
+    y := "text";
+    write(x);
+    write(y);
+    a := 7;
+    if (a > 5 + x) then
+        write("menor que 4");
+        write("acabar o if");
+    else
+        write("else");
+    endif
+    while (x > 0) do
+        write(x);
+        x := x - 1;
+        if (x == 1) then
+            write("test");
+        else
+            write("else");
+        endif
+    endwhile
+end
+endprogram
